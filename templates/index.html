@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Caesar Cipher</title>
+    <link rel="stylesheet" href={{ url_for('static', filename='css/dark.css' )}}>
+    <link rel="stylesheet" href={{ url_for('static', filename='css/style.css' )}}>
+</head>
+
+<body>
+
+    <div class="center">
+        <div class="box">
+            <h1>Caesar Cipher Encoder/Decoder</h1>
+            <form method="POST">
+                <h4>Tranform text</h4>
+                <textarea class="margin-bottom-20" rows="5" cols="100" name="text" placeholder="Enter your text here"
+                    required></textarea><br>
+                <!-- Text: <input class="margin-bottom-10 code" type="text" name="text" required> <br> -->
+
+                <span>Shift</span>
+                <input type="range" name="shift" list="values" value="3" min="3" max="100"
+                    oninput="this.nextElementSibling.value = this.value">
+                <output>3</output>
+
+                <datalist id="values">
+                    <option value="0" label="0"></option>
+                    <option value="25" label="25"></option>
+                    <option value="50" label="50"></option>
+                    <option value="75" label="75"></option>
+                    <option value="100" label="100"></option>
+                </datalist>
+
+
+
+                <div class="margin-top-20">
+                    <button class="btn" type="submit" name="action" value="encrypt">Encrypt</button>
+                    <button class="btn margin-left-10" type="submit" name="action" value="decrypt">Decrypt</button>
+                </div>
+            </form>
+            {% if result %}
+            <h3>Result: {{ result }}</h3>
+            {% endif %}
+
+        </div>
+    </div>
+
+
+
+    <!-- footer -->
+
+    <div class="footer">
+        <div>
+            <h3><a href="./">
+                    Home
+                </a>
+            </h3>
+        </div>
+
+        <div class="scrollable">
+            <a target="_blank" href="https://github.com/sarthac/crypto-assignment">Source code</a>
+        </div>
+
+    </div>
+</body>
+
+</html>
