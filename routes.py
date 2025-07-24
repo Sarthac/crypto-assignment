@@ -1,6 +1,6 @@
 import string
 
-def caesar_cipher(text, shift):
+def caesar_cipher(text: str, shift: int = 3) ->str :
     result = ''
     for char in text:
         if char.isupper():
@@ -14,7 +14,7 @@ def caesar_cipher(text, shift):
             result += char
     return result
 
-def mixed_alphanet(text: str, keyword: str):
+def mixed_alphanet(text: str, keyword: str) -> str:
     # Convert to uppercase
     keyword = keyword.upper()
     text = text.upper()
@@ -44,4 +44,36 @@ def mixed_alphanet(text: str, keyword: str):
 
     return cipher_text
 
+
+def atbash_en(text: str) -> str:
+    cipher =''
+    for char in text:
+        
+        if char.islower():
+            # asci lowercase alphabets start at 97 i.e a, and 122 is z
+            cipher+= chr(122 - (ord(char)- 97))
+
+        elif char.isupper():
+            # ascii uppercase start at 65 i.e A, and 90 is Z
+            cipher+= chr(90 - (ord(char) - 65))
+
+        else:
+            cipher+=char # for symobols and numbers
+
+    return cipher
+
+
+def atbash_de(text: str) -> str:
+    decipher = ''
+    for char in text:
+        if char.islower():
+            decipher += chr(122-ord(char) + 97)
+        
+        elif char.isupper():
+            decipher += chr(90-ord(char)+65)
+        
+        else:
+            decipher += char
+    
+    return decipher
 

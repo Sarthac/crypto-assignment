@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from routes import caesar_cipher, mixed_alphanet
+from routes import *
 
 app = Flask(__name__)
 
@@ -29,6 +29,14 @@ def mix(text,key):
     # print("TEXT:", repr(text))
     # print("KEY:", repr(key))
     return mixed_alphanet(text,key)
+
+@app.route("/atbash_en/<string:text>")
+def atbash_encrypt(text):
+    return atbash_en(text)
+
+@app.route("/atbash_de/<string:text>")
+def atbash_decrypt(text):
+    return atbash_de(text)
 
 if __name__ == "__main__":
     app.run(debug=True)
