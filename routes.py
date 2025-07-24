@@ -1,4 +1,4 @@
-import string
+import string, random
 
 def caesar_cipher(text: str, shift: int = 3) ->str :
     result = ''
@@ -76,4 +76,34 @@ def atbash_de(text: str) -> str:
             decipher += char
     
     return decipher
+
+class SimpleSubstitution:
+    def simple_random_key_gen(self):
+        return random.sample(string.ascii_lowercase, k=26)
+    
+    def letter_mapping(self, key: list) -> dict:
+        mapping = {}
+        for i, letter in enumerate(string.ascii_lowercase):
+            mapping[letter] = key[i]
+        return mapping
+
+    def simple_substitution_en(self, text: str, mapping: dict) -> str:
+        cipher_text = ''
+        for letter in text:
+            cipher_text+=mapping.get(letter, letter) # two letter becuase, second letter is for fallback if the letter is not found in mapping, this is going to using because text could have symbols & letters in it
+        return cipher_text
+    
+    def decipher_simple_substitution(self, text: str, mapping: dict) -> str:
+        # Reverse the mapping
+        inverse_mapping = {v: k for k, v in mapping.items()}
+
+        plain_text = ''
+        for letter in text:
+            plain_text += inverse_mapping.get(letter, letter)
+        return plain_text
+
+
+        
+
+
 
