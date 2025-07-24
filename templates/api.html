@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation</title>
+    <link rel="stylesheet" href={{ url_for('static', filename='css/dark.css' )}}>
+    <link rel="stylesheet" href={{ url_for('static', filename='css/style.css' )}}>
+
+</head>
+
+<body>
+    <p>API support in POST and GET request</p>
+    <p>Examples:</p>
+    <div>
+
+        <p>atbash cipher</p>
+        <a href="api/atbash_en?text=hello%20world">/api/simple_en?text=hello world</a>
+
+        <p>atbash decipher</p>
+        <a href="api/atbash_de?text=svool%20dliow">/api/atbash_de?text=svool dliow</a>
+
+        <p>Simple substitution cipher</p>
+        <a href="api/simple_en?text=hello%20world">/api/simple_en?text=hello world</a>
+
+
+    </div>
+
+
+    <!-- footer -->
+
+    <div class="footer">
+        <div>
+            <h3><a href="./">
+                    Home
+                </a>
+            </h3>
+        </div>
+
+        <div class="scrollable">
+            <a href="./api">API</a>
+            <a target="_blank" href="https://github.com/sarthac/crypto-assignment">Source code</a>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
