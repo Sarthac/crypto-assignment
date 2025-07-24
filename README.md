@@ -1,3 +1,12 @@
+
+**Ciphers that are currrently implemented**
+
+| Substitution ciphers |
+| ------ | 
+| Shift cipher | 
+| mixed-alphabet |
+| Atbash |
+
 # Setup 
 
 ```
@@ -18,7 +27,7 @@ gunicorn -w 4 -b 0.0.0.0:5000 app:app
 ```
 
 
-| Part         | Meaning                                                                                                                                                                                                                                                         |
+| Part         | Meaning                                                                                                                                                                                                                                                         |  
 | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **gunicorn** | Starts the **Gunicorn server**, a production-grade WSGI HTTP server for running Python web apps (Flask, Django, etc.).                                                                                                                                          |
 | **-w 4**     | Runs **4 worker processes** to handle requests concurrently. More workers = better performance under load (adjust based on your CPU cores).                                                                                                                     |
