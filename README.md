@@ -6,6 +6,7 @@
 | Shift cipher | 
 | mixed-alphabet |
 | Atbash |
+| Simple substitution cipher |
 
 # Setup 
 
