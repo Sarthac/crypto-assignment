@@ -7,6 +7,7 @@
 | mixed-alphabet |
 | Atbash |
 | Simple substitution cipher |
+| Rot13 |
 
 # Setup 
 
