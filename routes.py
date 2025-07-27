@@ -14,96 +14,120 @@ def caesar_cipher(text: str, shift: int = 3) ->str :
             result += char
     return result
 
-def mixed_alphanet(text: str, keyword: str) -> str:
-    # Convert to uppercase
-    keyword = keyword.upper()
-    text = text.upper()
+class SubstitutionCipher:
 
-    # Make keyword unique while preserving order
-    unique_keyword = ""
-    for char in keyword:
-        if char not in unique_keyword:
-            unique_keyword += char
+    def __init__(self, cipher_alphabets: list) -> None:
+        self.cipher_alphabets = cipher_alphabets
+        self.mapping = self.cipher_mapping()
 
-    # Create ciphertext alphabet
-    plaintext_alphabet = list(string.ascii_uppercase)
-    ciphertext_alphabet = list(unique_keyword)
+    # creating mapping of alphanets to cipher_alphanets
+    # examples : for atbash cipher
+    # 'a' : 'z'
+    # 'b  : 'y'
+    # 'c' : 'x'
 
-    for letter in plaintext_alphabet:
-        if letter not in ciphertext_alphabet:
-            ciphertext_alphabet.append(letter)
-
-    # Cipher the plaintext using the ciphertext alphabet
-    cipher_text = ""
-    for j in text:
-        if j in plaintext_alphabet:
-            i = plaintext_alphabet.index(j)
-            cipher_text += ciphertext_alphabet[i]
-        else:
-            cipher_text += j  # handle non-alphabet characters
-
-    return cipher_text
-
-
-def atbash_en(text: str) -> str:
-    cipher =''
-    for char in text:
+    def cipher_mapping(self):
+        mapping = {
+            'lowercase': {},
+            'uppercase': {}
+        }
+        for i, val in enumerate(string.ascii_lowercase):
+            mapping['lowercase'][val] = self.cipher_alphabets[i]
+            mapping['uppercase'][val.upper()] = self.cipher_alphabets[i].upper()
         
-        if char.islower():
-            # asci lowercase alphabets start at 97 i.e a, and 122 is z
-            cipher+= chr(122 - (ord(char)- 97))
-
-        elif char.isupper():
-            # ascii uppercase start at 65 i.e A, and 90 is Z
-            cipher+= chr(90 - (ord(char) - 65))
-
-        else:
-            cipher+=char # for symobols and numbers
-
-    return cipher
-
-
-def atbash_de(text: str) -> str:
-    decipher = ''
-    for char in text:
-        if char.islower():
-            decipher += chr(122-ord(char) + 97)
-        
-        elif char.isupper():
-            decipher += chr(90-ord(char)+65)
-        
-        else:
-            decipher += char
-    
-    return decipher
-
-class SimpleSubstitution:
-    def simple_random_key_gen(self):
-        return random.sample(string.ascii_lowercase, k=26)
-    
-    def letter_mapping(self, key: list) -> dict:
-        mapping = {}
-        for i, letter in enumerate(string.ascii_lowercase):
-            mapping[letter] = key[i]
         return mapping
 
-    def simple_substitution_en(self, text: str, mapping: dict) -> str:
+
+    def cipher(self, text: str ) -> str:
         cipher_text = ''
         for letter in text:
-            cipher_text+=mapping.get(letter, letter) # two letter becuase, second letter is for fallback if the letter is not found in mapping, this is going to using because text could have symbols & letters in it
+            if letter.islower():
+                cipher_text += self.mapping['lowercase'].get(letter, letter) # two letter parameters because if the letter doesn't include in the mapping, it will fallback to default i.e second letter parameter which is original letter
+            elif letter.isupper():
+                cipher_text += self.mapping['uppercase'].get(letter, letter)
+            else:
+                cipher_text += letter
         return cipher_text
+
     
-    def decipher_simple_substitution(self, text: str, mapping: dict) -> str:
-        # Reverse the mapping
-        inverse_mapping = {v: k for k, v in mapping.items()}
+    def decipher(self, text : str) -> str:
+        # Reverse the mapping for both cases
+        inverse_lower = {v: k for k, v in self.mapping['lowercase'].items()}
+        inverse_upper = {v: k for k, v in self.mapping['uppercase'].items()}
 
         plain_text = ''
         for letter in text:
-            plain_text += inverse_mapping.get(letter, letter)
+            if letter.islower():
+                plain_text += inverse_lower.get(letter, letter)
+            elif letter.isupper():
+                plain_text += inverse_upper.get(letter, letter)
+            else:
+                plain_text += letter
         return plain_text
 
 
+class MixedAlphabet(SubstitutionCipher):
+
+    def __init__(self, keyword: str) -> None:
+        self.keyword = keyword
+        cipher_alphabets = self.mixed_cipher_alphabets()
+        super().__init__(cipher_alphabets)
+
+    def mixed_cipher_alphabets(self):
+        # Make keyword unique while preserving order
+        unique_keyword = list(dict.fromkeys(self.keyword))
+        
+        alphabets = string.ascii_lowercase
+        cipher_alphabet = unique_keyword
+
+        for letter in alphabets:
+            if letter not in cipher_alphabet:
+                cipher_alphabet.append(letter)
+
+        return cipher_alphabet    
+
+
+class Atbash(SubstitutionCipher):
+
+    def __init__(self) -> None:
+        reverse_lowercase =  list(string.ascii_lowercase[::-1])
+        super().__init__(reverse_lowercase)
         
 
+class SimpleSubstitution(SubstitutionCipher):
+    def __init__(self) -> None:
+        cipher_alphabets = random.sample(string.ascii_lowercase, k=26)
+        super().__init__(cipher_alphabets)
+    
 
+class Rotate(SubstitutionCipher):
+    def __init__(self, shift: int) -> None:
+        self.shift = shift
+        cipher_alphabets = self.shift_to()
+        super().__init__(cipher_alphabets)
+
+    def shift_to(self):
+        # small letter in ASCII start from 97, in ASCII a = 97
+        return [chr((ord(char) - 97 + self.shift) % 26 + 97) for char in string.ascii_lowercase]
+            
+
+class Caesar(Rotate):
+    def __init__(self, shift: int =3) -> None:
+        super().__init__(shift)
+
+
+class Rot13(Rotate):
+    def __init__(self, shift: int =13) -> None:
+        super().__init__(shift)
+
+
+
+caesar = SimpleSubstitution()
+text = 'hello world'
+cipher = caesar.cipher(text)
+decipher = caesar.decipher(cipher)
+
+print(f'Original : {text}')
+print(f'Cipher : {cipher}')
+print(f'Decipher : {decipher}')
 
