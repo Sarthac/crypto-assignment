@@ -23,10 +23,12 @@ def index():
     if request.method == "POST":
         text = request.form["text"]
         shift = int(request.form["shift"])
+
+        rotate = Rotate(shift)
         if request.form["action"] == "encrypt":
-            result = caesar_cipher(text, shift)
+            result = rotate.cipher(text)
         else:
-            result = caesar_cipher(text, -shift)
+            result = rotate.decipher(text)
     return render_template('index.html', result=result)
 
 
@@ -37,21 +39,34 @@ def about():
 @app.route('/api')
 def api():
     return render_template('api.html')
-
-@app.route("/api/shift/<string:text>/<int:shift>")
-def shift(text,shift):
-    return caesar_cipher(text,shift)
-
-@app.route("/api/mix/<string:text>/<string:key>")
-def mix(text,key):
+   
+@app.route("/api/mix")
+def mix():
     # print("TEXT:", repr(text))
-    # print("KEY:", repr(key))
-    return mixed_alphanet(text,key)
+    # pr    int("KEY:", repr(key))
+    if request.method == 'POST':
+        data = request.get_json()
+        text = data.get('text')
+        key = data.get('key')
+    else:
+        text = request.args.get('text')
+        key = request.args.get('key')
+    
+    if not text:
+        return jsonify({'error' : "Missing 'text' field in request."}), 400
+    
+
+    cipher = MixedAlphabet(key)
+    cipher_text = cipher.cipher(text)
+    return jsonify({'text' : cipher_text,
+                    'key' : key})
 
 @app.route("/api/atbash_en", methods= ['POST', 'GET'])
 def atbash_encrypt():
     text = get_text_from_request()
-    cipher_text = atbash_en(text)
+    atbash = Atbash()
+    atbash_cipher_alphabets=atbash.cipher_alphabets
+    cipher_text = atbash.cipher(text)
     return jsonify({'text' : text,
                     'cipher_text' : cipher_text })
 
@@ -66,8 +81,8 @@ def atbash_decrypt():
     
     if not text:
         return jsonify({'error' : "Missing 'text' field in request."}), 400
-    
-    decipher_text = atbash_de(text)
+    atbash = Atbash()
+    decipher_text = atbash.decipher(text)
     return jsonify({'text' : text,
                     'cipher_text' : decipher_text })
 
@@ -83,13 +98,10 @@ def simple_substitution_encrypt():
         return jsonify({'error' : "Missing 'text' field in request."}), 400
 
     cipher = SimpleSubstitution()
-    key = cipher.simple_random_key_gen()
-    cipher_key = ''.join(key)
-    mapping = cipher.letter_mapping(key)
-    ans = cipher.simple_substitution_en(text,mapping)
+    ans = cipher.cipher(text)
+    cipher_key = cipher.cipher_alphabets
     return jsonify({'text': text,
-                    'cipher_key': cipher_key,  
-                    'mapping': mapping, 
+                    'cipher_key': cipher_key, 
                     'ciphertext': ans})
 
 
