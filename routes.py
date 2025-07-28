@@ -106,10 +106,137 @@ class Rot13(Rotate):
     def __init__(self, shift: int =13) -> None:
         super().__init__(shift)
 
+class Baconian(SubstitutionCipher):
+    modern_baconian_cipher = [
+    'aaaaa',  # a
+    'aaaab',  # b
+    'aaaba',  # c
+    'aaabb',  # d
+    'aabaa',  # e
+    'aabab',  # f
+    'aabba',  # g
+    'aabbb',  # h
+    'abaaa',  # i
+    'abaab',  # j
+    'ababa',  # k
+    'ababb',  # l
+    'abbaa',  # m
+    'abbab',  # n
+    'abbba',  # o
+    'abbbb',  # p
+    'baaaa',  # q
+    'baaab',  # r
+    'baaba',  # s
+    'baabb',  # t
+    'babaa',  # u
+    'babab',  # v
+    'babba',  # w
+    'babbb',  # x
+    'bbaaa',  # y
+    'bbaab'   # z
+    ]
+
+    old_baconian_cipher = [
+    'aaaaa',  # A
+    'aaaab',  # B
+    'aaaba',  # C
+    'aaabb',  # D
+    'aabaa',  # E
+    'aabab',  # F
+    'aabba',  # G
+    'aabbb',  # H
+    'abaaa',  # I / J
+    'abaaa',   # I / J
+    'abaab',  # K
+    'ababa',  # L
+    'ababb',  # M
+    'abbaa',  # N
+    'abbab',  # O
+    'abbba',  # P
+    'abbbb',  # Q
+    'baaaa',  # R
+    'baaab',  # S
+    'baaba',  # T
+    'baabb',  # U / V
+    'baabb',  # U / V
+    'babaa',  # W
+    'babab',  # X
+    'babba',  # Y
+    'babbb'   # Z
+]
 
 
-caesar = SimpleSubstitution()
-text = 'hello world'
+    def __init__(self, cipher_alphabet : list = None , modern_implementation=True) -> None:
+        if modern_implementation:
+            cipher_alphabet = self.modern_baconian_cipher
+        else:
+            cipher_alphabet = self.old_baconian_cipher
+
+        super().__init__(cipher_alphabet)
+    
+    def decipher(self, text: str) -> str:
+        inverse_lower = {v: k for k, v in self.mapping['lowercase'].items()}
+        inverse_upper = {v: k for k, v in self.mapping['uppercase'].items()}
+        plain_text = ''
+        i = 0
+        word_length = 5
+        while i < len(text):
+            if text[i] in [' ', '\n', '\t']:  # You can expand this list for more
+                plain_text += text[i]
+                i += 1
+            else:
+                block = text[i:i+word_length]
+                if block[0].islower():
+                    plain_text += inverse_lower.get(block, '?')
+                else:
+                    plain_text += inverse_upper.get(block, '?')
+                i += word_length
+        return plain_text
+
+class PolybiusSquare(SubstitutionCipher):
+    cipher_alphabets = ['00','01','02','03','04',
+                        '10','11','12','13','14',
+                        '20','21','22','23','24',
+                        '30','31','32','33','34',
+                        '40','41','42','43','44',
+                        '51'
+            ]
+    
+    def __init__(self) -> None:
+        super().__init__(self.cipher_alphabets)
+
+    def cipher(self, text: str ) -> str:
+        cipher_text = ''
+        for letter in text:
+            if letter.islower():
+                cipher_text += self.mapping['lowercase'].get(letter, letter) # two letter parameters because if the letter doesn't include in the mapping, it will fallback to default i.e second letter parameter which is original letter
+            elif letter.isupper():
+                cipher_text += self.mapping['uppercase'].get(letter, letter)
+            elif letter.isnumeric():
+                cipher_text += ''
+            else:
+                cipher_text += letter
+        return cipher_text
+       
+    def decipher(self, text: str) -> str:
+        inverse_lower = {v: k for k, v in self.mapping['lowercase'].items()}
+        inverse_upper = {v: k for k, v in self.mapping['uppercase'].items()}
+        plain_text = ''
+        i = 0
+        word_length = 2
+        while i < len(text):
+            if text[i] in [' ', '\n', '\t']:  # You can expand this list for more
+                plain_text += text[i]
+                i += 1
+            else:
+                block = text[i:i+word_length]
+                plain_text += inverse_lower.get(block, '?')
+                i += word_length
+        return plain_text
+    
+
+caesar = PolybiusSquare()
+text = 'hello world 234'
 cipher = caesar.cipher(text)
 decipher = caesar.decipher(cipher)
 
@@ -117,3 +244,5 @@ print(f'Original : {text}')
 print(f'Cipher : {cipher}')
 print(f'Decipher : {decipher}')
 
+num = '234'
+print(num.isnumeric)
