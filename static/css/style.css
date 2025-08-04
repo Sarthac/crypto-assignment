@@ -30,6 +30,11 @@ html {
     width: 50px;
 }
 
+.dp-none{
+    display: none;
+}
+
+
 textarea{
     border-radius: var(--border-radius);
     width: 100%;
