@@ -12,6 +12,10 @@
 
 # Setup
 
+### Requirements
+
+This project requires Python 3.11 or newer to run.
+
 ```
 pip install Flask gunicorn
 
