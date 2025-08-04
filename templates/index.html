@@ -2,7 +2,8 @@
 <html>
 
 <head>
-    <title>Caesar Cipher</title>
+    <title>encoder/decoder</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="stylesheet" href={{ url_for('static', filename='css/dark.css' )}}>
     <link rel="stylesheet" href={{ url_for('static', filename='css/style.css' )}}>
 </head>
@@ -11,17 +12,33 @@
 
     <div class="center">
         <div class="box">
-            <h1>Caesar Cipher Encoder/Decoder</h1>
+            <h1>Encoder/Decoder</h1>
             <form method="POST">
                 <h4>Tranform text</h4>
                 <textarea class="margin-bottom-20" rows="5" cols="100" name="text" placeholder="Enter your text here"
                     required></textarea><br>
                 <!-- Text: <input class="margin-bottom-10 code" type="text" name="text" required> <br> -->
 
-                <span>Shift</span>
-                <input type="range" name="shift" list="values" value="3" min="3" max="100"
-                    oninput="this.nextElementSibling.value = this.value">
-                <output>3</output>
+                <select name="algo">
+                    <option value="caesar">Caesar</option>
+                    <option value="shift">Shift Cipher</option>
+                    <option value="atbash">Atbash</option>
+                    <option value="simple_substitution">Simple Substitution</option>
+                    <option value="polybius_square">Polybius Square</option>
+                    <option value="baconian">Baconian</option>
+                    <option value="rot13">Rot 13</option>
+                    <option value="mixed_alphabet">Mixed Alphabet</option>
+                </select>
+
+                <br>
+
+                <div class="shift dp-none">
+                    <span>Shift</span>
+                    <input type="range" name="shift" list="values" value="3" min="3" max="100"
+                        oninput="this.nextElementSibling.value = this.value">
+                    <output>3</output>
+                </div>
+
 
                 <datalist id="values">
                     <option value="0" label="0"></option>
@@ -30,6 +47,8 @@
                     <option value="75" label="75"></option>
                     <option value="100" label="100"></option>
                 </datalist>
+
+
 
 
 
@@ -63,6 +82,10 @@
         </div>
 
     </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+
 </body>
 
 </html>
