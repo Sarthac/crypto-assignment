@@ -2,6 +2,8 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>encoder/decoder</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="stylesheet" href={{ url_for('static', filename='css/dark.css' )}}>
@@ -14,32 +16,47 @@
         <div class="box">
             <h1>Encoder/Decoder</h1>
             <form method="POST">
-                <h4>Tranform text</h4>
+
+                <!-- table head for similar look as cipher text table -->
+                <table>
+                    <tr>
+                        <th>Plain Text</th>
+                    </tr>
+                </table>
+
+                <!-- text area for user input -->
                 <textarea class="margin-bottom-20" rows="5" cols="100" name="text" placeholder="Enter your text here"
                     required></textarea><br>
-                <!-- Text: <input class="margin-bottom-10 code" type="text" name="text" required> <br> -->
 
-                <select name="algo">
-                    <option value="caesar">Caesar</option>
-                    <option value="shift">Shift Cipher</option>
-                    <option value="atbash">Atbash</option>
-                    <option value="simple_substitution">Simple Substitution</option>
-                    <option value="polybius_square">Polybius Square</option>
-                    <option value="baconian">Baconian</option>
-                    <option value="rot13">Rot 13</option>
-                    <option value="mixed_alphabet">Mixed Alphabet</option>
-                </select>
 
                 <br>
 
-                <div class="shift dp-none">
+                <div class="width-100">
+                    <!-- dropdown menu -->
+                    <select name="algo">
+                        <option value="caesar">Caesar</option>
+                        <option value="shift">Shift Cipher</option>
+                        <option value="atbash">Atbash</option>
+                        <option value="simple_substitution">Simple Substitution</option>
+                        <option value="polybius_square">Polybius Square</option>
+                        <option value="baconian">Baconian</option>
+                        <option value="rot13">Rot 13</option>
+                        <option value="mixed_alphabet">Mixed Alphabet</option>
+                    </select>
+
+                    <!-- keyword input -->
+                    <input class="dp-none border-radius-5px margin-left-10" name="keyword" placeholder="Keyword">
+                </div>
+
+                <!-- shift slider -->
+                <div class="shift dp-none margin-top-20">
                     <span>Shift</span>
                     <input type="range" name="shift" list="values" value="3" min="3" max="100"
                         oninput="this.nextElementSibling.value = this.value">
                     <output>3</output>
                 </div>
 
-
+                <!-- shift in ratio -->
                 <datalist id="values">
                     <option value="0" label="0"></option>
                     <option value="25" label="25"></option>
@@ -51,14 +68,23 @@
 
 
 
-
+                <!-- buttons -->
                 <div class="margin-top-20">
                     <button class="btn" type="submit" name="action" value="encrypt">Encrypt</button>
                     <button class="btn margin-left-10" type="submit" name="action" value="decrypt">Decrypt</button>
                 </div>
             </form>
+
+            <!-- result table -->
             {% if result %}
-            <h3>Result: {{ result }}</h3>
+            <table class="result">
+                <tr>
+                    <th>Cipher Text</th>
+                </tr>
+                <tr>
+                    <td>{{ result }}</td>
+                </tr>
+            </table>
             {% endif %}
 
         </div>

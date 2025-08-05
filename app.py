@@ -25,6 +25,7 @@ def index():
         text = request.form["text"]
         algo = request.form["algo"]
         shift = int(request.form["shift"])
+        keyword = request.form["keyword"]
 
         # | Substitution ciphers       |
         # | -------------------------- |
@@ -53,7 +54,7 @@ def index():
             case "baconian":
                 cipherAlgo = Baconian()
             case "mixed_alphabet":
-                cipherAlgo = MixedAlphabet(text)
+                cipherAlgo = MixedAlphabet(keyword)
 
         # rotate = Rotate(shift)
         if request.form["action"] == "encrypt":
@@ -80,17 +81,19 @@ def mix():
     if request.method == "POST":
         data = request.get_json()
         text = data.get("text")
-        key = data.get("key")
+        keyword = data.get("keyword")
+
     else:
         text = request.args.get("text")
         key = request.args.get("key")
+        keyword = request.args.get("keyword")
 
     if not text:
         return jsonify({"error": "Missing 'text' field in request."}), 400
 
-    cipher = MixedAlphabet(key)
+    cipher = MixedAlphabet(keyword)
     cipher_text = cipher.cipher(text)
-    return jsonify({"text": cipher_text, "key": key})
+    return jsonify({"text": cipher_text, "keyword": keyword})
 
 
 @app.route("/api/atbash_en", methods=["POST", "GET"])

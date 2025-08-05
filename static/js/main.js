@@ -30,8 +30,22 @@ window.addEventListener('DOMContentLoaded', () => {
 select.addEventListener('change', function () {
   if (select.value === 'shift') {
     shiftDiv.classList.remove('dp-none');
-  } else {
+    form.elements[2].classList.add('dp-none');
+    form.elements[2].required = false;
+
+  }
+
+  else if (select.value == 'mixed_alphabet') {
+    form.elements[2].classList.remove('dp-none');
+    form.elements[2].required = true;
     shiftDiv.classList.add('dp-none');
+
+  }
+  else {
+    shiftDiv.classList.add('dp-none');
+    form.elements[2].classList.add('dp-none');
+    form.elements[2].required = false;
+
   }
 });
 

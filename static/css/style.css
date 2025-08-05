@@ -26,6 +26,10 @@ html {
     width: 800px;
 }
 
+.border-radius-5px{
+    border-radius: 5px;
+}
+
 .auto-width {
     width: 50px;
 }
@@ -45,12 +49,116 @@ input[type="range"]{
 
 }
 
+.width-100{
+    width: 100%;
+}
+
+.result{
+    margin-top: 50px;
+}
+
+input[name='keyword']{
+    background-color: var(--background-color);
+    color: var(--foreground-100);
+    border: 1px solid var(--foreground-25);
+    font-size: large;
+    padding: 10px;
+    border-radius: 10px;
+    width: auto;
+    margin: 0;
+    max-width: 40%;
+}
+
+textarea{
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: var(--background-color);
+    color: var(--foreground-100);
+    border: 1px solid var(--foreground-25);
+    font-size: large;
+    border-radius: 0 0 10px 10px;
+    /* padding: 10px; */
+}
+
+select {
+    width: auto;
+    background-color: var(--input-background);
+    color: var(--foreground-100);
+    border: 1px solid #ccc;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    padding: 10px;
+    width: 200px;
+    border-radius: 10px;
+    border: 1px solid var(--foreground-25);
+    margin-top: 10px;
+}
+
+select option {
+    padding: 10px;
+}
+
+select {
+    width: auto;
+    margin-right: 10px;
+    background-color: var(--background-color);
+
+}
+
+
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+}
+
+th,
+td {
+    padding: 10px;
+    border-bottom: 1px solid var(--foreground-25);
+    border-right: 1px solid var(--foreground-25);
+}
+
+table tr td:first-child,
+table tr th:first-child {
+    border-left: 1px solid var(--foreground-25);
+}
+
+table tr th {
+  border-top: 1px solid var(--foreground-25);
+  text-align: left;
+}
+
+/* top-left border-radius */
+table tr:first-child th:first-child {
+  border-top-left-radius: 5px;
+}
+
+/* top-right border-radius */
+table tr:first-child th:last-child {
+  border-top-right-radius: 5px;
+}
+
+/* bottom-left border-radius */
+table tr:last-child td:first-child {
+  border-bottom-left-radius: 5px;
+}
+
+/* bottom-right border-radius */
+table tr:last-child td:last-child {
+  border-bottom-right-radius: 5px;
+}
+
+td {
+    color: var(--foreground-75);
+}
+
+th {
+    border-top: 0px;
+    background-color: var(--foreground-10);
+}
 /* end new css */
 
 
-input {
-    font-size: large;
-}
 
 body {
     margin: 0px;

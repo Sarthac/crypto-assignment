@@ -78,13 +78,13 @@ class Atbash(SubstitutionCipher):
     def __init__(self) -> None:
         reverse_lowercase =  list(string.ascii_lowercase[::-1])
         super().__init__(reverse_lowercase)
-        
+
 
 class SimpleSubstitution(SubstitutionCipher):
     def __init__(self) -> None:
         cipher_alphabets = random.sample(string.ascii_lowercase, k=26)
         super().__init__(cipher_alphabets)
-    
+
 
 class Rotate(SubstitutionCipher):
     def __init__(self, shift: int) -> None:
@@ -95,7 +95,7 @@ class Rotate(SubstitutionCipher):
     def shift_to(self):
         # small letter in ASCII start from 97, in ASCII a = 97
         return [chr((ord(char) - 97 + self.shift) % 26 + 97) for char in string.ascii_lowercase]
-            
+
 
 class Caesar(Rotate):
     def __init__(self, shift: int =3) -> None:
@@ -201,7 +201,7 @@ class PolybiusSquare(SubstitutionCipher):
                         '40','41','42','43','44',
                         '51'
             ]
-    
+
     def __init__(self) -> None:
         super().__init__(self.cipher_alphabets)
 
@@ -217,7 +217,7 @@ class PolybiusSquare(SubstitutionCipher):
             else:
                 cipher_text += letter
         return cipher_text
-       
+
     def decipher(self, text: str) -> str:
         inverse_lower = {v: k for k, v in self.mapping['lowercase'].items()}
         inverse_upper = {v: k for k, v in self.mapping['uppercase'].items()}
@@ -233,10 +233,12 @@ class PolybiusSquare(SubstitutionCipher):
                 plain_text += inverse_lower.get(block, '?')
                 i += word_length
         return plain_text
-    
 
-caesar = PolybiusSquare()
-text = 'hello world 234'
+
+text = "hello world, this is a test"
+keyword = 'zebras'
+caesar = MixedAlphabet(keyword)
+
 cipher = caesar.cipher(text)
 decipher = caesar.decipher(cipher)
 
