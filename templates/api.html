@@ -5,45 +5,204 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>API Documentation</title>
-    <link rel="stylesheet" href={{ url_for('static', filename='css/dark.css' )}}>
-    <link rel="stylesheet" href={{ url_for('static', filename='css/style.css' )}}>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dark.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .api-section {
+            margin-bottom: 30px;
+            border: 1px solid var(--foreground-10);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            background-color: var(--background-05);
+        }
 
+        .api-section h2 {
+            margin-top: 0;
+            border-bottom: 1px solid var(--foreground-15);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        code {
+            background-color: var(--foreground-10);
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--foreground-85);
+        }
+
+        .endpoint {
+            background-color: var(--foreground-10);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin: 15px 0;
+            font-family: 'Courier New', Courier, monospace;
+            border: 1px solid var(--foreground-15);
+            color: var(--foreground-85);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid var(--foreground-15);
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--foreground-10);
+            font-weight: 600;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        ul li {
+            margin-bottom: 15px;
+        }
+
+        ul a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color var(--transition-speed);
+        }
+
+        ul a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 
 <body>
-    <p>API support in POST and GET request</p>
-    <p>Examples:</p>
-    <div>
 
-        <p>atbash cipher</p>
-        <a href="api/atbash_en?text=hello%20world">/api/simple_en?text=hello world</a>
+    <div class="container">
+        <h1>API Documentation</h1>
+        <p>
+            This API provides access to a variety of substitution ciphers. All endpoints support both
+            <code>GET</code> and <code>POST</code> requests.
+        </p>
 
-        <p>atbash decipher</p>
-        <a href="api/atbash_de?text=svool%20dliow">/api/atbash_de?text=svool dliow</a>
+        <div class="api-section">
+            <h2>Base Endpoint</h2>
+            <p>The base URL for all cipher operations is:</p>
+            <div class="endpoint">/api/&lt;cipher_name&gt;</div>
+            <p>Replace <code>&lt;cipher_name&gt;</code> with one of the supported ciphers listed below.</p>
+        </div>
 
-        <p>Simple substitution cipher</p>
-        <a href="api/simple_en?text=hello%20world">/api/simple_en?text=hello world</a>
+        <div class="api-section">
+            <h2>Request Parameters</h2>
+            <p>
+                For <code>GET</code> requests, pass parameters in the query string. For <code>POST</code>
+                requests, send a JSON body.
+            </p>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Required?</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-label="Parameter"><code>text</code></td>
+                            <td data-label="Type">String</td>
+                            <td data-label="Required?"><strong>Yes</strong></td>
+                            <td data-label="Description">The input text to be encrypted or decrypted.</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Parameter"><code>action</code></td>
+                            <td data-label="Type">String</td>
+                            <td data-label="Required?">No</td>
+                            <td data-label="Description">
+                                The operation to perform. Can be <code>encrypt</code> or <code>decrypt</code>.
+                                Defaults to <code>encrypt</code>.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td data-label="Parameter"><code>keyword</code></td>
+                            <td data-label="Type">String</td>
+                            <td data-label="Required?">For <code>mixed_alphabet</code></td>
+                            <td data-label="Description">The keyword required for the Mixed Alphabet cipher.</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Parameter"><code>shift</code></td>
+                            <td data-label="Type">Integer</td>
+                            <td data-label="Required?">For <code>shift</code></td>
+                            <td data-label="Description">The number of positions to shift for the Shift cipher.</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Parameter"><code>key</code></td>
+                            <td data-label="Type">String</td>
+                            <td data-label="Required?">For <code>simple_substitution</code></td>
+                            <td data-label="Description">
+                                A 26-character string for the Simple Substitution cipher key. If omitted, a
+                                random key is generated.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-
+        <div class="api-section">
+            <h2>Supported Ciphers & Examples</h2>
+            <p>Click on the links to see a live example.</p>
+            <ul>
+                <li>
+                    <strong>atbash</strong><br>
+                    <a href="/api/atbash?text=hello" target="_blank">/api/atbash?text=hello</a>
+                </li>
+                <li>
+                    <strong>baconian</strong><br>
+                    <a href="/api/baconian?text=hello" target="_blank">/api/baconian?text=hello</a>
+                </li>
+                <li>
+                    <strong>caesar</strong><br>
+                    <a href="/api/caesar?text=hello" target="_blank">/api/caesar?text=hello</a>
+                </li>
+                <li>
+                    <strong>rot13</strong><br>
+                    <a href="/api/rot13?text=hello" target="_blank">/api/rot13?text=hello</a>
+                </li>
+                <li>
+                    <strong>polybius_square</strong><br>
+                    <a href="/api/polybius_square?text=hello" target="_blank">/api/polybius_square?text=hello</a>
+                </li>
+                <li>
+                    <strong>simple_substitution</strong> (with random key)<br>
+                    <a href="/api/simple_substitution?text=hello"
+                        target="_blank">/api/simple_substitution?text=hello</a>
+                </li>
+                <li>
+                    <strong>shift</strong> (requires <code>shift</code>)<br>
+                    <a href="/api/shift?text=hello&shift=5" target="_blank">/api/shift?text=hello&shift=5</a>
+                </li>
+                <li>
+                    <strong>mixed_alphabet</strong> (requires <code>keyword</code>)<br>
+                    <a href="/api/mixed_alphabet?text=hello&keyword=wednesday"
+                        target="_blank">/api/mixed_alphabet?text=hello&keyword=wednesday</a>
+                </li>
+            </ul>
+        </div>
     </div>
-
 
     <!-- footer -->
-
-    <div class="footer">
-        <div>
-            <h3><a href="./">
-                    Home
-                </a>
-            </h3>
-        </div>
-
-        <div class="scrollable">
-            <a href="./api">API</a>
-            <a target="_blank" href="https://github.com/sarthac/crypto-assignment">Source code</a>
-        </div>
-
-    </div>
+    <footer class="footer">
+        <a href="/">Home</a>
+        <a href="/api">API</a>
+        <a target="_blank" href="https://github.com/sarthac/crypto-assignment">Source Code</a>
+    </footer>
 
 </body>
 

@@ -1,117 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>encoder/decoder</title>
+    <title>Crypto Tools</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <link rel="stylesheet" href={{ url_for('static', filename='css/dark.css' )}}>
-    <link rel="stylesheet" href={{ url_for('static', filename='css/style.css' )}}>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dark.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .tool-box {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .tool-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px_16px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 
 <body>
-
-    <div class="center">
-        <div class="box">
-            <h1>Encoder/Decoder</h1>
-            <form method="POST">
-
-                <!-- table head for similar look as cipher text table -->
-                <table>
-                    <tr>
-                        <th>Plain Text</th>
-                    </tr>
-                </table>
-
-                <!-- text area for user input -->
-                <textarea class="margin-bottom-20" rows="5" cols="100" name="text" placeholder="Enter your text here"
-                    required></textarea><br>
-
-
-                <br>
-
-                <div class="width-100">
-                    <!-- dropdown menu -->
-                    <select name="algo">
-                        <option value="caesar">Caesar</option>
-                        <option value="shift">Shift Cipher</option>
-                        <option value="atbash">Atbash</option>
-                        <option value="simple_substitution">Simple Substitution</option>
-                        <option value="polybius_square">Polybius Square</option>
-                        <option value="baconian">Baconian</option>
-                        <option value="rot13">Rot 13</option>
-                        <option value="mixed_alphabet">Mixed Alphabet</option>
-                    </select>
-
-                    <!-- keyword input -->
-                    <input class="dp-none border-radius-5px margin-left-10" name="keyword" placeholder="Keyword">
+    <div class="container">
+        <header>
+            <h1>Crypto Tools</h1>
+            <p>A collection of cryptography tools.</p>
+        </header>
+        <main>
+            <a href="{{ url_for('cipher.cipher') }}" class="box tool-box">
+                <h2 class="box-title">Ciphers</h2>
+                <div class="box-content">
+                    <p>Encrypt and decrypt messages using various classical ciphers.</p>
                 </div>
+            </a>
 
-                <!-- shift slider -->
-                <div class="shift dp-none margin-top-20">
-                    <span>Shift</span>
-                    <input type="range" name="shift" list="values" value="3" min="3" max="100"
-                        oninput="this.nextElementSibling.value = this.value">
-                    <output>3</output>
+            <a href="{{ url_for('steganography.steganography') }}" class="box tool-box">
+                <h2 class="box-title">Steganography</h2>
+                <div class="box-content">
+                    <p>Hide secret messages within images.</p>
                 </div>
-
-                <!-- shift in ratio -->
-                <datalist id="values">
-                    <option value="0" label="0"></option>
-                    <option value="25" label="25"></option>
-                    <option value="50" label="50"></option>
-                    <option value="75" label="75"></option>
-                    <option value="100" label="100"></option>
-                </datalist>
-
-
-
-
-                <!-- buttons -->
-                <div class="margin-top-20">
-                    <button class="btn" type="submit" name="action" value="encrypt">Encrypt</button>
-                    <button class="btn margin-left-10" type="submit" name="action" value="decrypt">Decrypt</button>
-                </div>
-            </form>
-
-            <!-- result table -->
-            {% if result %}
-            <table class="result">
-                <tr>
-                    <th>Cipher Text</th>
-                </tr>
-                <tr>
-                    <td>{{ result }}</td>
-                </tr>
-            </table>
-            {% endif %}
-
-        </div>
+            </a>
+        </main>
     </div>
 
-
-
-    <!-- footer -->
-
-    <div class="footer">
-        <div>
-            <h3><a href="./">
-                    Home
-                </a>
-            </h3>
-        </div>
-
-        <div class="scrollable">
-            <a href="./api">API</a>
-            <a target="_blank" href="https://github.com/sarthac/crypto-assignment">Source code</a>
-        </div>
-
-    </div>
-
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-
-
+    <footer class="footer">
+        <a href="/">Home</a>
+        <a href="/api">API</a>
+        <a target="_blank" href="https://github.com/sarthac/crypto-assignment">Source Code</a>
+    </footer>
 </body>
 
 </html>

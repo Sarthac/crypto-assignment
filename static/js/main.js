@@ -1,52 +1,40 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const cipherForm = document.getElementById('cipher-form');
+    const algoSelect = document.getElementById('algo-select');
+    const keywordGroup = document.getElementById('keyword-group');
+    const shiftGroup = document.getElementById('shift-group');
+    const cipherAlphabetsGroup = document.getElementById('cipher-alphabets-group');
+    const textInput = document.getElementById('text-input');
 
-let form = document.querySelector('form')
-let select = document.querySelector('select')
-let input = document.querySelector('input')
-let shiftDiv = document.querySelector('.shift')
+    // Function to toggle visibility of conditional form groups
+    const toggleConditionalFields = () => {
+        const selectedAlgo = algoSelect.value;
+        keywordGroup.style.display = selectedAlgo === 'mixed_alphabet' ? 'flex' : 'none';
+        shiftGroup.style.display = selectedAlgo === 'shift' ? 'flex' : 'none';
+        cipherAlphabetsGroup.style.display = selectedAlgo === 'simple_substitution' ? 'flex' : 'none';
+    };
 
-function setValuesAsBefore() {
-    let selected = document.querySelector('select')
-    selected.value = selected.value
-}
+    // Event listener for algorithm selection change
+    algoSelect.addEventListener('change', toggleConditionalFields);
 
-// Save the selected value before form submits
-form.addEventListener('submit', function () {
-  localStorage.setItem('query', this.elements[0].value)
-  localStorage.setItem('selectedValue', this.elements[1].value);
+    // Save form state to localStorage before submission
+    cipherForm.addEventListener('submit', () => {
+        localStorage.setItem('selectedAlgo', algoSelect.value);
+        localStorage.setItem('textInputValue', textInput.value);
+    });
+
+    // Restore form state on page load
+    const savedAlgo = localStorage.getItem('selectedAlgo');
+    const savedText = localStorage.getItem('textInputValue');
+
+    if (savedAlgo) {
+        algoSelect.value = savedAlgo;
+    }
+
+    if (savedText) {
+        textInput.value = savedText;
+    }
+
+    // Initial check to set the correct form fields visibility
+    toggleConditionalFields();
 });
-
-// Restore previously selected value from localStorage
-window.addEventListener('DOMContentLoaded', () => {
-  let savedValue = localStorage.getItem('selectedValue');
-  let query = localStorage.getItem('query');
-
-  if (savedValue, query) {
-    form.elements[0].value = query
-    form.elements[1].value = savedValue;
-  }
-});
-
-
-select.addEventListener('change', function () {
-  if (select.value === 'shift') {
-    shiftDiv.classList.remove('dp-none');
-    form.elements[2].classList.add('dp-none');
-    form.elements[2].required = false;
-
-  }
-
-  else if (select.value == 'mixed_alphabet') {
-    form.elements[2].classList.remove('dp-none');
-    form.elements[2].required = true;
-    shiftDiv.classList.add('dp-none');
-
-  }
-  else {
-    shiftDiv.classList.add('dp-none');
-    form.elements[2].classList.add('dp-none');
-    form.elements[2].required = false;
-
-  }
-});
-
-
