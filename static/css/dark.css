@@ -1,13 +1,13 @@
 :root {
 
-    --background-color: #000000;
+    --background-color: #1C1C1E;
     --input-background: #1B1B1B;
     --line: rgba(255, 255, 255, 0.25);
-    --foreground-100: rgba(255, 255, 255);
-    --foreground-75: rgba(255, 255, 255, 0.75);
-    --foreground-50: rgba(255, 255, 255, 0.50);
-    --foreground-25: rgba(255, 255, 255, 0.25);
-    --foreground-10: rgba(255, 255, 255, 0.10);
+    --foreground-100: #EAEAEB;
+    --foreground-75: rgba(234, 234, 235, 0.75);
+    --foreground-50: rgba(234, 234, 235, 0.50);
+    --foreground-25: rgba(234, 234, 235, 0.25);
+    --foreground-10: rgba(234, 234, 235, 0.10);
 
     color-scheme: dark;
 }
