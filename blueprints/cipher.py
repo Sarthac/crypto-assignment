@@ -75,8 +75,6 @@ def cipher():
 
         except (ValueError, TypeError, KeyError) as e:
             error = f"Error: {e}"
-            # Optionally, you can render the form with the error message
-            # For now, we'll just print it and show a generic error on the page
             print(error)
             result = "An error occurred. Please check your input."
 
@@ -86,6 +84,3 @@ def cipher():
         cipher_alphabets=cipher_alphabets,
         error=error,
     )
-
-
-
