@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const shiftGroup = document.getElementById('shift-group');
     const cipherAlphabetsGroup = document.getElementById('cipher-alphabets-group');
     const textInput = document.getElementById('text-input');
+    const file = document.getElementById('file')
 
     // Function to toggle visibility of conditional form groups
     const toggleConditionalFields = () => {
@@ -37,4 +38,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial check to set the correct form fields visibility
     toggleConditionalFields();
+
 });
