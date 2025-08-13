@@ -1,63 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Tools</title>
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/dark.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <style>
-        .tool-box {
-            display: block;
-            text-decoration: none;
-            color: inherit;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
 
-        .tool-box:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px_16px rgba(0, 0, 0, 0.1);
-        }
-    </style>
-</head>
+{% block title %}Home {% endblock %}
 
-<body>
-    <div class="container">
-        <header>
-            <h1>Crypto Tools</h1>
-            <p>A collection of cryptography tools.</p>
-        </header>
-        <main>
-            <a href="{{ url_for('cipher.cipher') }}" class="box tool-box">
-                <h2 class="box-title">Ciphers</h2>
-                <div class="box-content">
-                    <p>Encrypt and decrypt messages using various classical ciphers.</p>
-                </div>
-            </a>
+{% block content%}
+<div class="container">
+    <header>
+        <h1>Crypto Tools</h1>
+        <p>A collection of cryptography tools.</p>
+    </header>
+    <main>
+        <a href="{{ url_for('cipher.cipher') }}" class="box tool-box">
+            <h2 class="box-title">Ciphers</h2>
+            <div class="box-content">
+                <p>Encrypt and decrypt messages using various classical ciphers.</p>
+            </div>
+        </a>
 
-            <a href="{{ url_for('steganography.steganography') }}" class="box tool-box">
-                <h2 class="box-title">Steganography</h2>
-                <div class="box-content">
-                    <p>Hide secret messages within images.</p>
-                </div>
-            </a>
+        <a href="{{ url_for('steganography.steganography') }}" class="box tool-box">
+            <h2 class="box-title">Steganography</h2>
+            <div class="box-content">
+                <p>Hide secret messages within images.</p>
+            </div>
+        </a>
 
-            <a href="{{ url_for('hashing.hashing') }}" class="box tool-box">
-                <h2 class="box-title">Hashing</h2>
-                <div class="box-content">
-                    <p>Generate hash values for your text using various algorithms.</p>
-                </div>
-            </a>
-        </main>
-    </div>
-
-    <footer class="footer">
-        <a href="/">Home</a>
-        <a href="/api">API</a>
-        <a target="_blank" href="https://github.com/sarthac/crypto-assignment">Source Code</a>
-    </footer>
-</body>
-
-</html>
+        <a href="{{ url_for('hashing.hashing') }}" class="box tool-box">
+            <h2 class="box-title">Hashing</h2>
+            <div class="box-content">
+                <p>Generate hash values for your text using various algorithms.</p>
+            </div>
+        </a>
+    </main>
+</div>
+{% endblock %}

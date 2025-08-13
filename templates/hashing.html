@@ -1,82 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
+{%extends "base.html"%}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hashing</title>
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/dark.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
+{%block title%}Hashing {%endblock%}
 
-<body>
+{%block content%}
+<div class="container">
+    <header>
+        <h1>Hashing</h1>
+        <p>Generate hash values for your text using various algorithms.</p>
+    </header>
 
-    <div class="container">
-        <header>
-            <h1>Hashing</h1>
-            <p>Generate hash values for your text using various algorithms.</p>
-        </header>
+    <main>
+        <div class="box">
+            <h2 class="box-title">Input</h2>
+            <div class="box-content">
+                <form method="POST" action="{{ url_for('hashing.hashing') }}" enctype="multipart/form-data">
 
-        <main>
-            <div class="box">
-                <h2 class="box-title">Input</h2>
-                <div class="box-content">
-                    <form method="POST" action="{{ url_for('hashing.hashing') }}" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="text-input">Text</label>
+                        <textarea id="text-input" name="text"
+                            placeholder="Enter your text here">{{ text or '' }}</textarea>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="text-input">Text</label>
-                            <textarea id="text-input" name="text"
-                                placeholder="Enter your text here">{{ text or '' }}</textarea>
-                        </div>
+                    <div class="form-group">
+                        <label for="file">Choose a file</label>
+                        <input type="file" id="file" name="file">
+                    </div>
 
-                        <div class="form-group">
-                            <label for="file">Choose a file</label>
-                            <input type="file" id="file" name="file">
-                        </div>
+                    <div class="button-group">
+                        <button class="btn primary" type="submit">Generate Hashes</button>
+                    </div>
+                </form>
 
-                        <div class="button-group">
-                            <button class="btn primary" type="submit">Generate Hashes</button>
-                        </div>
-                    </form>
-
-                </div>
             </div>
+        </div>
 
-            {% if result %}
-            <div class="box result">
-                <h2 class="box-title">Hashes</h2>
-                <div class="box-content" style="overflow: auto;">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Algorithm</th>
-                                <th>Hash Value</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for algo, hash_value in result.items() %}
-                            <tr>
-                                <td>{{ algo }}</td>
-                                <td>
-                                    <pre>{{ hash_value }}</pre>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+        {% if result %}
+        <div class="box result">
+            <h2 class="box-title">Hashes</h2>
+            <div class="box-content" style="overflow: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Algorithm</th>
+                            <th>Hash Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for algo, hash_value in result.items() %}
+                        <tr>
+                            <td>{{ algo }}</td>
+                            <td>
+                                <pre>{{ hash_value }}</pre>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
-            {% endif %}
-        </main>
-    </div>
+        </div>
+        {% endif %}
+    </main>
+</div>
 
-    <footer class="footer">
-        <a href="/">Home</a>
-        <a href="/api">API</a>
-        <a target="_blank" href="https://github.com/sarthac/crypto-assignment">Source Code</a>
-    </footer>
-
-</body>
-
-</html>
+{%endblock%}
