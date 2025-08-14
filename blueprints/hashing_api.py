@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from hashing import get_str_hash
+from ciphers.hashing import get_str_hash
 
 hashing_api_bp = Blueprint("hashing_api_bp", __name__)
 

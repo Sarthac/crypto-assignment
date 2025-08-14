@@ -1,5 +1,5 @@
 from flask import Blueprint, request, render_template
-from hashing import get_str_hash, get_file_hash
+from ciphers.hashing import get_str_hash, get_file_hash
 
 hashing_bp = Blueprint("hashing", __name__)
 

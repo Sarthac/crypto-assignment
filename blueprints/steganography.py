@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, send_file
 from stegano import lsb
 import io
 
-from ciphers import MixedAlphabet
+from ciphers.ciphers import MixedAlphabet
 
 steganography_bp = Blueprint(
     "steganography", __name__, template_folder="templates", static_folder="static"
