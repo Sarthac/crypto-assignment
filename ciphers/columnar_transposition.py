@@ -1,6 +1,9 @@
+from .utils import omit_all_except_alpha
+
+
 class ColumnarTransposition:
     def __init__(self, key: str):
-        self.key = key.lower()
+        self.key = key.upper()
 
     def _get_key_order(self):
         """Return list of column indices in the order they should be read."""
@@ -12,6 +15,7 @@ class ColumnarTransposition:
         return [["" for _ in range(key_len)] for _ in range(row_len)]
 
     def encrypt(self, plaintext: str):
+        plaintext = omit_all_except_alpha(plaintext).upper()
         grid = self._create_grid(plaintext)
         # Fill grid row-by-row
         idx = 0
@@ -30,6 +34,7 @@ class ColumnarTransposition:
         return ciphertext
 
     def decrypt(self, ciphertext: str):
+        plaintext = omit_all_except_alpha(ciphertext).upper()
         grid = self._create_grid(ciphertext)
         order = self._get_key_order()
 
@@ -48,3 +53,15 @@ class ColumnarTransposition:
                 if grid[r][c] != "":
                     plaintext += grid[r][c]
         return plaintext
+
+# ----------------------
+# Example usage
+# ----------------------
+cipher = ColumnarTransposition("LOKEY")
+
+plaintext = "HELLOWORLDTHISISANEX"
+enc = cipher.encrypt(plaintext)
+print("Ciphertext:", enc)
+
+dec = cipher.decrypt(enc)
+print("Plaintext:", dec)

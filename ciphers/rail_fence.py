@@ -1,4 +1,4 @@
-import utils
+from .utils import omit_blank_spaces, omit_all_except_alpha
 
 
 class RailFence:
@@ -6,9 +6,9 @@ class RailFence:
         if row_length < 2:
             raise ValueError("row_length must be at least 2")
         if str_validation == "omit_spaces":
-            self.s = utils.omit_blank_spaces(s)
+            self.s = omit_blank_spaces(s)
         else:
-            self.s = utils.omit_all_except_alpha(s)
+            self.s = omit_all_except_alpha(s)
 
         self.row_length = row_length
 
