@@ -14,7 +14,7 @@ class ColumnarTransposition:
         row_len = -(-len(text) // key_len)  # ceil division
         return [["" for _ in range(key_len)] for _ in range(row_len)]
 
-    def encrypt(self, plaintext: str):
+    def cipher(self, plaintext: str):
         plaintext = omit_all_except_alpha(plaintext).upper()
         grid = self._create_grid(plaintext)
         # Fill grid row-by-row
@@ -33,7 +33,7 @@ class ColumnarTransposition:
                     ciphertext += grid[r][c]
         return ciphertext
 
-    def decrypt(self, ciphertext: str):
+    def decipher(self, ciphertext: str):
         plaintext = omit_all_except_alpha(ciphertext).upper()
         grid = self._create_grid(ciphertext)
         order = self._get_key_order()
@@ -53,15 +53,3 @@ class ColumnarTransposition:
                 if grid[r][c] != "":
                     plaintext += grid[r][c]
         return plaintext
-
-# ----------------------
-# Example usage
-# ----------------------
-cipher = ColumnarTransposition("LOKEY")
-
-plaintext = "HELLOWORLDTHISISANEX"
-enc = cipher.encrypt(plaintext)
-print("Ciphertext:", enc)
-
-dec = cipher.decrypt(enc)
-print("Plaintext:", dec)

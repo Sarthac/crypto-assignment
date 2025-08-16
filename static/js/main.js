@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const cipherForm = document.getElementById('cipher-form');
     const algoSelect = document.getElementById('algo-select');
     const keywordGroup = document.getElementById('keyword-group');
+    const keyGroup = document.getElementById('key-group')
     const shiftGroup = document.getElementById('shift-group');
     const cipherAlphabetsGroup = document.getElementById('cipher-alphabets-group');
     const textInput = document.getElementById('text-input');
@@ -10,9 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to toggle visibility of conditional form groups
     const toggleConditionalFields = () => {
         const selectedAlgo = algoSelect.value;
-        keywordGroup.style.display = selectedAlgo === 'mixed_alphabet' ? 'flex' : 'none';
+        keywordGroup.style.display = (selectedAlgo === 'mixed_alphabet' || selectedAlgo ===  'columnar') ? 'flex' : 'none';
         shiftGroup.style.display = selectedAlgo === 'shift' ? 'flex' : 'none';
         cipherAlphabetsGroup.style.display = selectedAlgo === 'simple_substitution' ? 'flex' : 'none';
+        keyGroup.style.display = (selectedAlgo === 'rail_fence' || selectedAlgo === 'scytale') ? 'flex' : 'none';
+        
     };
 
     // Event listener for algorithm selection change
@@ -38,5 +41,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial check to set the correct form fields visibility
     toggleConditionalFields();
-
 });

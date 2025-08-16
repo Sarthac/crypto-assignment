@@ -6,9 +6,9 @@ class RailFence:
         if row_length < 2:
             raise ValueError("row_length must be at least 2")
         if str_validation == "omit_spaces":
-            self.s = omit_blank_spaces(s)
+            self.s = omit_blank_spaces(s).upper()
         else:
-            self.s = omit_all_except_alpha(s)
+            self.s = omit_all_except_alpha(s).upper()
 
         self.row_length = row_length
 
@@ -40,7 +40,7 @@ class RailFence:
                 direction *= -1
         return rails
 
-    def encrypt_with_rail_fence(self, rail_matrix: list):
+    def cipher(self, rail_matrix: list):
         """Read row-by-row to get encrypted string."""
         out = []
         for row in rail_matrix:
@@ -49,7 +49,7 @@ class RailFence:
                     out.append(ch)
         return "".join(out)
 
-    def decrypt_with_rail_fence(self):
+    def decipher(self):
         """Reverse the encryption process, returning the plaintext."""
         s_len = len(self.s)
         if self.row_length < 2 or s_len == 0:

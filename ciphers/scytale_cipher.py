@@ -1,5 +1,6 @@
 from .columnar_transposition import ColumnarTransposition
 
+
 class Scytale(ColumnarTransposition):
     def __init__(self, key: int) -> None:
         self.key = key
@@ -12,9 +13,8 @@ class Scytale(ColumnarTransposition):
     def _get_key_order(self):
         return range(self.key)
 
-    def encrypt(self, plaintext: str):
+    def cipher(self, plaintext: str):
         if self.key >= len(plaintext) // 2:
             raise ValueError("Key should be less than half size of text")
         else:
-            return super().encrypt(plaintext)
-
+            return super().cipher(plaintext)

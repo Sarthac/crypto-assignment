@@ -5,12 +5,12 @@ from ciphers.scytale_cipher import Scytale
 # Encrypt
 t = RailFence("sarthak, this is a test ! ..", 3)
 rail = t.create_rail_fence()
-enc = t.encrypt_with_rail_fence(rail)
+enc = t.cipher(rail)
 print(enc)  # e.g., shatark
 
 # Decrypt
 td = RailFence(enc, 3)
-dec = td.decrypt_with_rail_fence()
+dec = td.decipher()
 print(dec)  # sarthak
 
 
@@ -20,10 +20,10 @@ print(dec)  # sarthak
 cipher = ColumnarTransposition("LOKEY")
 
 plaintext = "HELLOWORLDTHISISANEX"
-enc = cipher.encrypt(plaintext)
+enc = cipher.cipher(plaintext)
 print("Ciphertext:", enc)
 
-dec = cipher.decrypt(enc)
+dec = cipher.decipher(enc)
 print("Plaintext:", dec)
 
 
@@ -33,11 +33,8 @@ print("Plaintext:", dec)
 cipher = Scytale(3)
 
 plaintext = "HELLOWORLDTHISISANEX"
-enc = cipher.encrypt(plaintext)
+enc = cipher.cipher(plaintext)
 print("Ciphertext:", enc)
 
-dec = cipher.decrypt(enc)
+dec = cipher.decipher(enc)
 print("Plaintext:", dec)
-
-
-

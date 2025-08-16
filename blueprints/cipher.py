@@ -11,6 +11,10 @@ from ciphers.ciphers import (
     SimpleSubstitution,
 )
 
+from ciphers.rail_fence import RailFence
+from ciphers.columnar_transposition import ColumnarTransposition
+from ciphers.scytale_cipher import Scytale
+
 cipher_bp = Blueprint("cipher", __name__)
 
 
@@ -35,6 +39,9 @@ def cipher():
                 "mixed_alphabet": MixedAlphabet,
                 "shift": Rotate,
                 "simple_substitution": SimpleSubstitution,
+                "rail_fence": RailFence,
+                "columnar": ColumnarTransposition,
+                "scytale": Scytale,
             }
 
             cipher_class = cipher_class_map.get(algo)
@@ -64,6 +71,26 @@ def cipher():
                     cipher_instance = SimpleSubstitution(user_alphabet)
                     # Persist the user-provided or generated alphabet in the form
                     cipher_alphabets = "".join(cipher_instance.cipher_alphabets)
+
+                elif algo == "rail_fence":
+                    key_raw = request.form.get("key", 3)
+                    key = int(key_raw)
+                    cipher_instance = RailFence(text, key)
+                    text = cipher_instance.create_rail_fence()
+
+                elif algo == "columnar":
+                    keyword = request.form.get("keyword", "")
+                    if not keyword:
+                        raise ValueError(
+                            "Keyword is required for Columnar Transposition cipher."
+                        )
+                    cipher_instance = ColumnarTransposition(keyword)
+
+                elif algo == "scytale":
+                    key_raw = request.form.get("key", 3)
+                    key = int(key_raw)
+                    cipher_instance = Scytale(key)
+
                 else:
                     cipher_instance = cipher_class()
 
