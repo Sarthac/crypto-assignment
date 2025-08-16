@@ -10,19 +10,26 @@ from ciphers.ciphers import (
     SimpleSubstitution,
 )
 
+from ciphers.rail_fence import RailFence
+from ciphers.columnar_transposition import ColumnarTransposition
+from ciphers.scytale_cipher import Scytale
+
 api_bp = Blueprint("api", __name__)
 
-# Map API names to their corresponding cipher classes
 cipher_map = {
     "atbash": Atbash,
     "baconian": Baconian,
     "caesar": Caesar,
-    "mixed_alphabet": MixedAlphabet,
-    "polybius_square": PolybiusSquare,
     "rot13": Rot13,
+    "polybius_square": PolybiusSquare,
+    "mixed_alphabet": MixedAlphabet,
     "shift": Shift,
     "simple_substitution": SimpleSubstitution,
+    "rail_fence": RailFence,
+    "columnar": ColumnarTransposition,
+    "scytale": Scytale,
 }
+
 
 @api_bp.route("/api/<cipher_name>", methods=["GET", "POST"])
 def api(cipher_name):
@@ -54,51 +61,83 @@ def api(cipher_name):
     cipher_class = cipher_map[cipher_name]
     cipher_instance = None
 
+    # Handle ciphers with specific initialization requirements
     try:
-        # Handle ciphers with specific initialization requirements
-        if cipher_name == "mixed_alphabet":
-            keyword = data.get("keyword")
-            if not keyword:
-                return (
-                    jsonify(
-                        {
-                            "error": "The 'keyword' parameter is required for mixed_alphabet."
-                        }
-                    ),
-                    400,
-                )
-            cipher_instance = cipher_class(keyword)
+        match cipher_name:
+            # ----------------------
+            # substitution ciphers
+            # ----------------------
+            case "mixed_alphabet":
+                keyword = data.get("keyword")
+                if not keyword:
+                    return (
+                        jsonify(
+                            {
+                                "error": "The 'keyword' parameter is required for mixed_alphabet."
+                            }
+                        ),
+                        400,
+                    )
+                cipher_instance = cipher_class(keyword)
 
-        elif cipher_name == "shift":
-            shift_str = data.get("shift")
-            if shift_str is None:
-                return (
-                    jsonify(
-                        {
-                            "error": "The 'shift' parameter is required for the rotate cipher."
-                        }
-                    ),
-                    400,
+            case "shift":
+                shift_str = data.get("shift")
+                if shift_str is None:
+                    return (
+                        jsonify(
+                            {
+                                "error": "The 'shift' parameter is required for the rotate cipher."
+                            }
+                        ),
+                        400,
+                    )
+                try:
+                    shift = int(shift_str)
+                    cipher_instance = cipher_class(shift)
+                except (ValueError, TypeError):
+                    return (
+                        jsonify(
+                            {"error": "The 'shift' parameter must be a valid integer."}
+                        ),
+                        400,
+                    )
+
+            case "simple_substitution":
+                key = data.get("key")
+                # If a key is provided, use it. Otherwise, the class generates a random one.
+                cipher_instance = cipher_class(key)
+
+            # ----------------------
+            # transposition ciphers
+            # ----------------------
+
+            case "rail_fence":
+                key_raw = data.get("key")
+                key = (
+                    int(key_raw)
+                    if isinstance(key_raw, str) and key_raw.isdigit()
+                    else 3
                 )
-            try:
-                shift = int(shift_str)
-                cipher_instance = cipher_class(shift)
-            except (ValueError, TypeError):
-                return (
-                    jsonify(
-                        {"error": "The 'shift' parameter must be a valid integer."}
-                    ),
-                    400,
+                original_text = text
+                cipher_instance = cipher_class(text, key)
+                text = cipher_instance.create_rail_fence()
+
+            case "columnar":
+                keyword = data.get("keyword")
+                cipher_instance = cipher_class(keyword)
+
+            case "scytale":
+                key_raw = data.get("key")
+                key = (
+                    int(key_raw)
+                    if isinstance(key_raw, str) and key_raw.isdigit()
+                    else 3
                 )
 
-        elif cipher_name == "simple_substitution":
-            key = data.get("key")
-            # If a key is provided, use it. Otherwise, the class generates a random one.
-            cipher_instance = cipher_class(key)
-
-        else:
-            # For ciphers like Atbash, Caesar, Rot13, Baconian, PolybiusSquare
-            cipher_instance = cipher_class()
+                cipher_instance = cipher_class(key)
+            case _:
+                # For ciphers like Atbash, Caesar, Rot13, Baconian, PolybiusSquare
+                cipher_instance = cipher_class()
 
         # Perform the requested action
         if action == "encrypt":
@@ -106,24 +145,29 @@ def api(cipher_name):
         else:  # action == "decrypt"
             result = cipher_instance.decipher(text)
 
-        # Include the key in the response for SimpleSubstitution for clarity
-        if cipher_name == "simple_substitution":
-            return jsonify(
-                {
-                    "text": text,
-                    "result": result,
-                    "key": "".join(cipher_instance.cipher_alphabets),
-                }
-            )
-        elif cipher_name == "shift":
-            return {"text": text, "result": result, "shift": data.get("shift")}
+        # returing json
+        match cipher_name:
+            case "simple_substitution":
+                return jsonify(
+                    {
+                        "text": text,
+                        "result": result,
+                        "key": "".join(cipher_instance.cipher_alphabets),
+                    }
+                )
 
-        elif cipher_name == "mixed_alphabet":
-            return {"text": text, "result": result, "shift": data.get("keyword")}
+            case "shift":
+                return {"text": text, "result": result, "shift": data.get("shift")}
 
-        return jsonify({"text": text, "result": result})
+            case "mixed_alphabet":
+                return {"text": text, "result": result, "shift": data.get("keyword")}
+
+            case "rail_fence":
+                return {"text": original_text, "result": result}
+
+            case _:
+                return jsonify({"text": text, "result": result})
 
     except Exception as e:
         # Generic error handler for any other issues during cipher processing
         return jsonify({"error": f"An error occurred: {str(e)}"}), 500
-

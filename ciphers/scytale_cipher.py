@@ -2,7 +2,7 @@ from .columnar_transposition import ColumnarTransposition
 
 
 class Scytale(ColumnarTransposition):
-    def __init__(self, key: int) -> None:
+    def __init__(self, key: int = 3) -> None:
         self.key = key
 
     def _create_grid(self, text: str):

@@ -52,8 +52,11 @@
                     <tr>
                         <td data-label="Parameter"><code>keyword</code></td>
                         <td data-label="Type">String</td>
-                        <td data-label="Required?">For <code>mixed_alphabet</code></td>
-                        <td data-label="Description">The keyword required for the Mixed Alphabet cipher.</td>
+                        <td data-label="Required?">For
+                            <code>mixed_alphabet</code>,<br><code>columnar_transposition</code>
+                        </td>
+                        <td data-label="Description">The keyword required for the Mixed Alphabet cipher.For Columnar
+                            Transposition, it's the keyword.</td>
                     </tr>
                     <tr>
                         <td data-label="Parameter"><code>shift</code></td>
@@ -64,11 +67,20 @@
                     <tr>
                         <td data-label="Parameter"><code>key</code></td>
                         <td data-label="Type">String</td>
-                        <td data-label="Required?">For <code>simple_substitution</code></td>
+                        <td data-label="Required?">For <code>simple_substitution</code>
+                        </td>
                         <td data-label="Description">
                             A 26-character string for the Simple Substitution cipher key. If omitted, a
                             random key is generated.
                         </td>
+                    </tr>
+                    <tr>
+                        <td data-label="Parameter"><code>key</code></td>
+                        <td data-label="Type">Integer</td>
+                        <td data-label="Required?">For <code>rail_fence</code>,<br><code>Scytale</code></td>
+                        <td data-label="Description">The number of rails(key) for the Rail Fence cipher.For Scytale,
+                            it's the
+                            number of faces.</td>
                     </tr>
                 </tbody>
             </table>
@@ -111,6 +123,29 @@
                 <strong>mixed_alphabet</strong> (requires <code>keyword</code>)<br>
                 <a href="/api/mixed_alphabet?text=hello&keyword=wednesday"
                     target="_blank">/api/mixed_alphabet?text=hello&keyword=wednesday</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="api-section">
+        <h2>Transposition Ciphers</h2>
+        <p>
+            Transposition ciphers work by rearranging the order of the letters in the message.
+        </p>
+        <ul>
+            <li>
+                <strong>rail_fence</strong> (requires <code>rails</code>)<br>
+                <a href="/api/rail_fence?text=helloworld&key=3"
+                    target="_blank">/api/rail_fence?text=helloworld&key=3</a>
+            </li>
+            <li>
+                <strong>columnar_transposition</strong> (requires <code>key</code>)<br>
+                <a href="/api/columnar?text=helloworld&keyword=word"
+                    target="_blank">/api/columnar?text=helloworld&keyword=word</a>
+            </li>
+            <li>
+                <strong>scytale</strong> (requires <code>key</code>)<br>
+                <a href="/api/scytale?text=helloworld&key=3" target="_blank">/api/scytale?text=helloworld&key=3</a>
             </li>
         </ul>
     </div>
