@@ -11,3 +11,8 @@ def home():
 @home_bp.route("/api", methods=["GET"])
 def api_home():
     return render_template("api.html")
+
+
+@home_bp.route("/test", methods=["GET"])
+def test_home():
+    return render_template("test.html")

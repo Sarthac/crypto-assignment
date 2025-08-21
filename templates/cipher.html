@@ -4,25 +4,30 @@
 
 {%block content%}
 
-<div class="container">
-    <header>
-        <h1>Encoder/Decoder</h1>
+<div class="container m-4 mt-10 max-w-2xl mx-auto">
+    <header class="mb-10">
+        <h1 class="font-bold text-2xl ">Encoder/Decoder</h1>
         <p>A simple tool for encrypting and decrypting text with various ciphers.</p>
     </header>
 
     <main>
         <div class="box">
-            <h2 class="box-title">Input</h2>
-            <div class="box-content">
-                <form method="POST" id="cipher-form" action="{{url_for('cipher.cipher')}}">
+            <form method="POST" id="cipher-form" action="{{url_for('cipher.cipher')}}">
+                <!-- start -->
+
+                <fieldset
+                    class="fieldset bg-base-200 dark:bg-base-300 border border-base-300 rounded-box p-4 [&>*]:py-1.5">
+                    <!-- textarea -->
                     <div class="form-group">
-                        <label for="text-input">Plain Text</label>
-                        <textarea id="text-input" name="text" placeholder="Enter your text here" required></textarea>
+                        <label class="label block mb-2" for="text-input">Plain Text</label>
+                        <textarea class="textarea w-full" id="text-input" name="text" placeholder="Enter your text here"
+                            required></textarea>
                     </div>
 
+                    <!-- select -->
                     <div class="form-group">
-                        <label for="algo-select">Cipher Algorithm</label>
-                        <select id="algo-select" name="algo">
+                        <label class="label block mb-2" for="algo-select">Cipher Algorithm</label>
+                        <select class="select w-full" id="algo-select" name="algo">
                             <optgroup label="Substitution Ciphers">
                                 <option value="caesar">Caesar</option>
                                 <option value="shift">Shift Cipher</option>
@@ -41,52 +46,66 @@
                         </select>
                     </div>
 
+                    <!-- keyword -->
                     <div class="form-group" id="keyword-group" style="display: none;">
-                        <label for="keyword-input">Keyword</label>
-                        <input id="keyword-input" name="keyword" placeholder="Enter keyword">
+                        <label class="label block mb-2" for="keyword-input">Keyword</label>
+                        <input class="input w-full" id="keyword-input" name="keyword" placeholder="Enter keyword">
                     </div>
 
+
+                    <!-- key -->
                     <div class="form-group" id="key-group" style="display: none;">
-                        <label for="key-input">Key</label>
-                        <input type="number" min="3" value="3" id="key-input" name="key" placeholder="Enter key">
+
+                        <label class="label block mb-2" for="key-input">Key</label>
+                        <input class="input w-full" type="number" min="3" value="3" id="key-input" name="key"
+                            placeholder="Enter key">
                     </div>
 
+                    <!-- shift -->
                     <div class="form-group" id="shift-group" style="display: none;">
-                        <label for="shift-input">Shift Amount: <output>3</output></label>
-                        <input type="range" id="shift-input" name="shift" min="1" max="25" value="3"
-                            oninput="this.previousElementSibling.querySelector('output').value = this.value">
+                        <label class="label block mb-2" for="shift-input">Shift Amount: <output>3</output></label>
+                        <input class="range shift w-full" type="range" id="shift-input" name="shift" min="1" max="100"
+                            value="3" oninput="this.previousElementSibling.querySelector('output').value = this.value">
                     </div>
 
+
+                    <!-- cipher alphabets -->
                     <div class="form-group" id="cipher-alphabets-group" style="display: none;">
-                        <label for="cipher-alphabets-input">Cipher Alphabets</label>
-                        <div class="input-with-button">
-                            <input id="cipher-alphabets-input" name="cipher_alphabets"
-                                placeholder="Enter 26 unique letters or generate" value="{{ cipher_alphabets or '' }}">
-                            <button type="submit" name="action" value="generate" class="btn">Generate</button>
+                        <label class="label block mb-2" for="cipher-alphabets-input">Cipher Alphabets</label>
+                        <div class="input-with-button flex content-around justify-between">
+                            <input class="input w-full mr-4" id="cipher-alphabets-input" type="text"
+                                name="cipher_alphabets" placeholder="Enter 26 unique letters or generate"
+                                value="{{ cipher_alphabets or '' }}">
+                            <button type="submit" name="action" value="generate"
+                                class="btn btn-primary btn-outline">Generate</button>
                         </div>
                     </div>
 
+
+                    <!-- action buttons -->
                     <div class="button-group">
-                        <button class="btn primary" type="submit" name="action" value="encrypt">Encrypt</button>
-                        <button class="btn" type="submit" name="action" value="decrypt">Decrypt</button>
+
+                        <button class="btn btn-primary w-auto" type="submit" name="action"
+                            value="encrypt">Encrypt</button>
+                        <button class="btn btn-neutral btn-auto ml-4" type="submit" name="action"
+                            value="decrypt">Decrypt</button>
                     </div>
-                </form>
-            </div>
+                </fieldset>
+
+                {% if result %}
+                <div class="card bg-base-200 dark:bg-base-300 mt-4 border border-base-300">
+                    <div class="card-body">
+                        <h3 class="card-title mr-0">Result</h3>
+                        <p class="text-md">{{ result }}</p>
+                    </div>
+                </div>
+                {% endif %}
+            </form>
         </div>
 
-        {% if result %}
-        <div class="box result">
-            <h2 class="box-title">Result</h2>
-            <div class="box-content">
-                <h3>Cipher Text</h3>
-                <pre>{{ result }}</pre>
-            </div>
-        </div>
-        {% endif %}
+
     </main>
 </div>
-{%endblock%}
 
-{%block js%}
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 {%endblock%}

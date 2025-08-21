@@ -4,48 +4,50 @@
 
 
 {%block content%}
-<div class="container">
-    <header>
-        <h1>Steganography</h1>
-        <p>Hide a secret message in an image or reveal a hidden one.</p>
+<div class="container m-4 mt-10 max-w-2xl mx-auto">
+    <header class="mb-10">
+        <h1 class="text-2xl font-bold">Steganography</h1>
+        <p class="mt-1">Hide a secret message in an image or reveal a hidden one.</p>
     </header>
     <main>
         <div class="box">
-            <div class="box-title">Steganography Tool</div>
             <div class="box-content">
                 <form method="post" enctype="multipart/form-data" action="{{ url_for('steganography.steganography') }}">
-                    <div class="form-group">
-                        <label for="image">Image File</label>
-                        <input type="file" id="image" name="image" accept="image/png" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="text">Secret Message (for hiding)</label>
-                        <textarea id="text" name="text" rows="4"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="keyword">Keyword</label>
-                        <input type="text" id="keyword" name="keyword">
-                    </div>
-                    <div class="button-group">
-                        <button name="action" value="hide" class="btn primary" type="submit">Hide Message</button>
-                        <button name="action" value="show" class="btn" type="submit">Reveal Message</button>
-                    </div>
+                    <fieldset class="fieldset bg-base-200 dark:bg-base-300 border-base-300 rounded-box border p-4">
+                        <legend class="fieldset-legend"></legend>
+
+                        <label for="" class="label">Message</label>
+                        <textarea class="textarea w-full" id="text" name="text" rows="4"
+                            placeholder="Enter Secret Message"></textarea>
+
+                        <label for="" class="label">Browser file</label>
+                        <input class="file-input w-full" type="file" id="image" name="image" accept="image/png"
+                            required />
+
+                        <label class="label">Keyword</label>
+                        <input class="input w-full" type="text" id="keyword" name="keyword"
+                            placeholder="Enter Alphabetic Keyword To Cipher The Message">
+
+                        <button name="action" value="hide" class="btn btn-primary mt-4" type="submit">Hide
+                            Message</button>
+                        <button name="action" value="show" class="btn btn-neutral mt-0.5" type="submit">Reveal
+                            Message</button>
+
+                    </fieldset>
                 </form>
             </div>
         </div>
 
         {% if message %}
-        <div class="result">
-            <h3>Revealed Message:</h3>
-            <pre>{{ message }}</pre>
+
+        <div class="card bg-base-200 dark:bg-base-300 mt-4 border border-base-300">
+            <div class="card-body">
+                <h3 class="card-title mr-0">Revealed Message</h3>
+                <p class="text-md">{{ message }}</p>
+            </div>
         </div>
         {% endif %}
     </main>
-    <footer class="footer">
-        <a href="/">Home</a>
-        <a href="/api">API</a>
-        <a target="_blank" href="https://github.com/sarthac/crypto-assignment">Source Code</a>
-    </footer>
 </div>
 
 {%endblock%}

@@ -1,44 +1,78 @@
-{%extends "base.html"%}
+{% extends "base.html" %}
 
-{%block title%}Hashing {%endblock%}
+{% block title %}Hashing {% endblock %}
 
-{%block content%}
-<div class="container">
-    <header>
-        <h1>Hashing</h1>
-        <p>Generate hash values for your text using various algorithms.</p>
+{% block content %}
+<div class="container m-4 mt-10 max-w-2xl mx-auto">
+    <header class="mb-10">
+        <h1 class="text-2xl font-bold">Hashing</h1>
+        <p class="mt-1">Generate hash values for your text using various algorithms.</p>
     </header>
 
     <main>
-        <div class="box">
-            <h2 class="box-title">Input</h2>
-            <div class="box-content">
-                <form method="POST" action="{{ url_for('hashing.hashing') }}" enctype="multipart/form-data">
+        <div class="box-content">
+            <form method="POST" action="{{ url_for('hashing.hashing') }}" enctype="multipart/form-data">
+                <fieldset class="fieldset bg-base-200 dark:bg-base-300 border-base-300 rounded-box border p-4">
 
-                    <div class="form-group">
-                        <label for="text-input">Text</label>
-                        <textarea id="text-input" name="text"
-                            placeholder="Enter your text here">{{ text or '' }}</textarea>
+                    <!-- textarea -->
+                    <label class="label textarea-element" for="text-input ">Text</label>
+                    <textarea class="textarea w-full mb-4 textarea-element" id="text-input" name="text"
+                        placeholder="Enter your text here">{{ text or '' }}</textarea>
+
+
+                    <!-- file input box -->
+                    <label class="label file-element" for="file">Choose a file</label>
+                    <input class="file-input w-full mb-0 file-element" type="file" id="file" name="file">
+
+                    <!-- hash checkbox -->
+                    <div class="mb-1 mt-2">
+                        <input class="checkbox integrity-element" type="checkbox" name="integrity" id="integrity">
+                        <label class="label ml-2 integrity-element" for="integrity">Check Integrity</label>
                     </div>
 
-                    <div class="form-group">
-                        <label for="file">Choose a file</label>
-                        <input type="file" id="file" name="file">
-                    </div>
 
-                    <div class="button-group">
-                        <button class="btn primary" type="submit">Generate Hashes</button>
-                    </div>
-                </form>
+                    <!-- hash input box -->
+                    <label class="label hidden hash" for="hash">Enter sha256 hash</label>
+                    <input type="text" class="input w-full hidden hash" name="hash-value">
 
-            </div>
+
+                    <!-- button -->
+                    <button class="btn btn-primary btn-element mt-4" type="submit">Generate Hashes</button>
+                    <button class="btn btn-neutral reset-btn" type="reset">Reset</button>
+
+
+                </fieldset>
+            </form>
+
         </div>
 
+        {% if integrity %}
+        <div role="alert" class="alert alert-success mt-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>File is in original state, it hasn't been tempered</span>
+        </div>
+        {%endif%}
+
+        {% if not integrity and integrity != None %}
+        <div role="alert" class="alert alert-error mt-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>File has been tempered, You shound't trust the file</span>
+        </div>
+        {%endif%}
+
+
         {% if result %}
-        <div class="box result">
-            <h2 class="box-title">Hashes</h2>
-            <div class="box-content" style="overflow: auto;">
-                <table>
+        <div class="mt-6">
+            <div class="overflow-x-auto rounded-box border border-base-content/5">
+                <table class="table text-sm md:text-base lg:text-lg table-zebra">
                     <thead>
                         <tr>
                             <th>Algorithm</th>
@@ -49,8 +83,10 @@
                         {% for algo, hash_value in result.items() %}
                         <tr>
                             <td>{{ algo }}</td>
-                            <td>
-                                <pre>{{ hash_value }}</pre>
+                            <td class="max-w-[200px] overflow-x-auto">
+                                <div class="overflow-x-auto">
+                                    <pre class="whitespace-pre-wrap">{{ hash_value }}</pre>
+                                </div>
                             </td>
                         </tr>
                         {% endfor %}
@@ -61,5 +97,6 @@
         {% endif %}
     </main>
 </div>
+<script src="{{ url_for('static', filename='js/hashing.js') }}"></script>
 
-{%endblock%}
+{% endblock %}

@@ -6,16 +6,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const shiftGroup = document.getElementById('shift-group');
     const cipherAlphabetsGroup = document.getElementById('cipher-alphabets-group');
     const textInput = document.getElementById('text-input');
-    const file = document.getElementById('file')
 
     // Function to toggle visibility of conditional form groups
     const toggleConditionalFields = () => {
         const selectedAlgo = algoSelect.value;
-        keywordGroup.style.display = (selectedAlgo === 'mixed_alphabet' || selectedAlgo ===  'columnar') ? 'flex' : 'none';
-        shiftGroup.style.display = selectedAlgo === 'shift' ? 'flex' : 'none';
-        cipherAlphabetsGroup.style.display = selectedAlgo === 'simple_substitution' ? 'flex' : 'none';
-        keyGroup.style.display = (selectedAlgo === 'rail_fence' || selectedAlgo === 'scytale') ? 'flex' : 'none';
-        
+        keywordGroup.style.display = (selectedAlgo === 'mixed_alphabet' || selectedAlgo === 'columnar') ? 'block' : 'none';
+        shiftGroup.style.display = selectedAlgo === 'shift' ? 'block' : 'none';
+        cipherAlphabetsGroup.style.display = selectedAlgo === 'simple_substitution' ? 'block' : 'none';
+        keyGroup.style.display = (selectedAlgo === 'rail_fence' || selectedAlgo === 'scytale') ? 'block' : 'none';
+
     };
 
     // Event listener for algorithm selection change

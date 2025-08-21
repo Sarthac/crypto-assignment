@@ -4,31 +4,28 @@
 {% block title %}Home {% endblock %}
 
 {% block content%}
-<div class="container">
+<div class="container prose mx-auto max-w-3xl mt-10">
     <header>
         <h1>Crypto Tools</h1>
         <p>A collection of cryptography tools.</p>
     </header>
     <main>
-        <a href="{{ url_for('cipher.cipher') }}" class="box tool-box">
-            <h2 class="box-title">Ciphers</h2>
-            <div class="box-content">
-                <p>Encrypt and decrypt messages using various classical ciphers.</p>
-            </div>
+        <a href="{{ url_for('cipher.cipher') }}"
+            class="card bg-base-300 card-border p-10 my-4 hover:bg-primary no-underline ">
+            <h2 class="mt-0 mb-2">Ciphers</h2>
+            <p class="mb-0">Encrypt and decrypt messages using various classical ciphers.</p>
         </a>
 
-        <a href="{{ url_for('steganography.steganography') }}" class="box tool-box">
-            <h2 class="box-title">Steganography</h2>
-            <div class="box-content">
-                <p>Hide secret messages within images.</p>
-            </div>
+        <a href="{{ url_for('steganography.steganography') }}"
+            class="card bg-base-300 card-border p-10 my-4 hover:bg-primary no-underline">
+            <h2 class="mt-0 mb-2">Steganography</h2>
+            <p class="mb-0">Hide secret messages within images.</p>
         </a>
 
-        <a href="{{ url_for('hashing.hashing') }}" class="box tool-box">
-            <h2 class="box-title">Hashing</h2>
-            <div class="box-content">
-                <p>Generate hash values for your text using various algorithms.</p>
-            </div>
+        <a href="{{ url_for('hashing.hashing') }}"
+            class="card bg-base-300 card-border p-10 my-4 hover:bg-primary no-underline">
+            <h2 class="mt-0 mb-2">Hashing</h2>
+            <p class="mb-0">Generate hash values for your text using various algorithms.</p>
         </a>
     </main>
 </div>

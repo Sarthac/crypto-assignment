@@ -1,0 +1,38 @@
+{
+  "name": "crypto-assignment",
+  "version": "1.0.0",
+  "description": "crypto tools",
+  "main": "main.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "starttailwind" : "npx @tailwindcss/cli -i ./static/css/input.css -o ./static/css/output.css --watch",
+    "build:css": "tailwindcss -i ./static/css/input.css -o ./static/css/style.css --minify"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sarthac/crypto-assignment.git"
+  },
+  "keywords": [
+    "cryptography",
+    "crypto",
+    "hashing",
+    "steganography"
+  ],
+  "author": "Sarthak Patil",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/Sarthac/crypto-assignment/issues"
+  },
+  "homepage": "https://github.com/Sarthac/crypto-assignment#readme",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.12",
+    "tailwindcss": "^4.1.12"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.16",
+    "daisyui": "^5.0.50"
+  }
+}

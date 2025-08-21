@@ -1,2 +1,7 @@
+# python
 __pycache__
 .venv
+
+# node
+node_modules/
+static/css/output.css

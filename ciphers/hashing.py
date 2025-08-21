@@ -42,4 +42,3 @@ def get_file_hash(file_obj, algo=["md5", "sha256"], chunk_size=8192):
 
     file_obj.seek(0)  # rewind for later use
     return {name: h.hexdigest() for name, h in hashers.items()}
-
