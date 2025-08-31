@@ -15,14 +15,8 @@ def hashing():
             file = request.files["file"]
             file_hash_values = get_file_hash(file)
             sha256_hash = file_hash_values.get("sha256")
-            print("testing")
-
-            print(request.form.get("hash-value"))
-            print(request.form.get("hash"))
-
             if request.form.get("hash-value"):
-                user_hash_value = request.form.get("hash-value")
-                print(request.form.get("hash-value"))
+                user_hash_value = request.form.get("hash-value", "").strip()
                 integrity = True if user_hash_value == sha256_hash else False
             else:
                 result = file_hash_values
