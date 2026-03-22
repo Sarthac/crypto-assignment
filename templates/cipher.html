@@ -6,29 +6,39 @@
 
 <div class="container m-4 mt-10 max-w-2xl mx-auto">
     <header class="mb-10">
-        <h1 class="font-bold text-2xl ">Encoder/Decoder</h1>
-        <p>A simple tool for encrypting and decrypting text with various ciphers.</p>
+        <h1 class="font-bold text-2xl ">retro_ciphers</h1>
+        <p>Classical cipher implementation.</p>
     </header>
 
     <main>
         <div class="box">
-            <form method="POST" id="cipher-form" action="{{url_for('cipher.cipher')}}">
-                <!-- start -->
+            <form method="POST" id="cipher-form" action="{{url_for('crypto.convertor')}}">
+                {# start #}
+
+                {#
+                POST keys:
+                text : plain text that user sends
+                algo : cipher algorithm user select
+                keyword : keyword used for mixed_alphabet cipher algorithm
+                action : perform a action i.e value: encrypt (to cipher the text), decrypt (to decipher the text),
+                generate (neeed for simple_substitution cipher)
+                #}
 
                 <fieldset
                     class="fieldset bg-base-200 dark:bg-base-300 border border-base-300 rounded-box p-4 [&>*]:py-1.5">
-                    <!-- textarea -->
+                    {# textarea #}
                     <div class="form-group">
                         <label class="label block mb-2" for="text-input">Plain Text</label>
                         <textarea class="textarea w-full" id="text-input" name="text" placeholder="Enter your text here"
                             required></textarea>
                     </div>
 
-                    <!-- select -->
+                    {# select #}
+                    {# algo #}
                     <div class="form-group">
                         <label class="label block mb-2" for="algo-select">Cipher Algorithm</label>
                         <select class="select w-full" id="algo-select" name="algo">
-                            <optgroup label="Substitution Ciphers">
+                            <optgroup label="Monoalphabetic Substitution Ciphers">
                                 <option value="caesar">Caesar</option>
                                 <option value="shift">Shift Cipher</option>
                                 <option value="atbash">Atbash</option>
@@ -38,30 +48,24 @@
                                 <option value="rot13">Rot13</option>
                                 <option value="mixed_alphabet">Mixed Alphabet</option>
                             </optgroup>
-                            <optgroup label="Transposition Ciphers">
-                                <option value="rail_fence">Rail Fence</option>
-                                <option value="columnar">Columnar Transposition</option>
-                                <option value="scytale">Scytale</option>
+                            {#
+                            <optgroup label="Polyalphabetic Substitution Ciphers">
+                                <option value="alberti">Alberti</option>
+                                <option value="vigenere">Vigenere</option>
+                                <option value="beaufort">Beaufort</option>
+                                <option value="autokey">Autokey</option>
                             </optgroup>
+                            #}
                         </select>
                     </div>
 
-                    <!-- keyword -->
+                    {# keyword #}
                     <div class="form-group" id="keyword-group" style="display: none;">
                         <label class="label block mb-2" for="keyword-input">Keyword</label>
                         <input class="input w-full" id="keyword-input" name="keyword" placeholder="Enter keyword">
                     </div>
 
-
-                    <!-- key -->
-                    <div class="form-group" id="key-group" style="display: none;">
-
-                        <label class="label block mb-2" for="key-input">Key</label>
-                        <input class="input w-full" type="number" min="3" value="3" id="key-input" name="key"
-                            placeholder="Enter key">
-                    </div>
-
-                    <!-- shift -->
+                    {# shift #}
                     <div class="form-group" id="shift-group" style="display: none;">
                         <label class="label block mb-2" for="shift-input">Shift Amount: <output>3</output></label>
                         <input class="range shift w-full" type="range" id="shift-input" name="shift" min="1" max="100"
@@ -69,20 +73,20 @@
                     </div>
 
 
-                    <!-- cipher alphabets -->
+                    {# cipher_alphabet #}
                     <div class="form-group" id="cipher-alphabets-group" style="display: none;">
-                        <label class="label block mb-2" for="cipher-alphabets-input">Cipher Alphabets</label>
+                        <label class="label block mb-2" for="cipher-alphabets-input">Cipher Alphabet</label>
                         <div class="input-with-button flex content-around justify-between">
                             <input class="input w-full mr-4" id="cipher-alphabets-input" type="text"
-                                name="cipher_alphabets" placeholder="Enter 26 unique letters or generate"
-                                value="{{ cipher_alphabets or '' }}">
+                                name="cipher_alphabet" placeholder="Enter 26 unique letters or generate"
+                                value="{{ cipher_alphabet or '' }}">
                             <button type="submit" name="action" value="generate"
                                 class="btn btn-primary btn-outline">Generate</button>
                         </div>
                     </div>
 
 
-                    <!-- action buttons -->
+                    {# action #}
                     <div class="button-group">
 
                         <button class="btn btn-primary w-auto" type="submit" name="action"
@@ -100,6 +104,16 @@
                     </div>
                 </div>
                 {% endif %}
+
+                {% if error%}
+                <div class="card bg-base-200 dark:bg-base-300 mt-4 border border-base-300">
+                    <div class="card-body">
+                        <h3 class="card-title mr-0">Error</h3>
+                        <p class="text-md text-red-500">{{ error }}</p>
+                    </div>
+                </div>
+                {% endif %}
+                {# end #}
             </form>
         </div>
 

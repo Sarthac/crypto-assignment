@@ -1,6 +1,6 @@
 {
   "name": "crypto-assignment",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "crypto tools",
   "main": "main.js",
   "directories": {
@@ -17,9 +17,7 @@
   },
   "keywords": [
     "cryptography",
-    "crypto",
-    "hashing",
-    "steganography"
+    "crypto"
   ],
   "author": "Sarthak Patil",
   "license": "GPL-3.0",
