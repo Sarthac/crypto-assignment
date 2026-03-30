@@ -9,10 +9,9 @@ from retro_ciphers.mono import (
     SimpleSubstitution,
     Baconian,
     PolybiusSquare,
-
 )
 
-from retro_ciphers.poly import Vigenere, Alberti, Beaufort, Autokey
+from retro_ciphers.poly import Vigenere, Alberti, Beaufort, Autokey, Trithemius
 
 
 crypto = Blueprint("crypto", __name__)
@@ -20,22 +19,25 @@ crypto = Blueprint("crypto", __name__)
 
 @crypto.route("/", methods=["GET", "POST"])
 def convertor():
-    result : str | None = None
-    cipher_alphabet : str | None = None
+    text: str = ""
+    algo: str = "caesar"
+    keyword: str = ""
+    shift: int = 3
+    result: str | None = None
+    cipher_alphabet: str | None = None
     error = None
 
     if request.method == "POST":
-        text: str = request.form.get("text", "")
-        algo: str  = request.form.get("algo", "caesar")
-        action: str = request.form.get("action", "encrypt")
+        text = request.form.get("text", "")
+        algo = request.form.get("algo", "caesar")
+        action = request.form.get("action", "encrypt")
 
         try:
-            # enforce text
-            if not text:
+            # Enforce text ONLY if they are actively trying to encrypt/decrypt
+            if action in ["encrypt", "decrypt"] and not text:
                 raise ValueError("Text is required.")
 
-            # map algorithm to class
-            cipher_class_map: dict[str,type] = {
+            cipher_class_map: dict[str, type] = {
                 "atbash": Atbash,
                 "shift": Shift,
                 "caesar": Caesar,
@@ -44,53 +46,61 @@ def convertor():
                 "simple_substitution": SimpleSubstitution,
                 "baconian": Baconian,
                 "polybius_square": PolybiusSquare,
+                "alberti": Alberti,
+                "trithemius": Trithemius,
+                "vigenere": Vigenere,
+                "beaufort": Beaufort,
+                "autokey": Autokey,
             }
 
-            # get cipher class from map
             if algo not in cipher_class_map:
                 raise KeyError(f"Invalid algorithm: {algo}")
+
             cipher_class: type = cipher_class_map[algo]
 
-            # handle different algorithms
             match algo:
                 case "shift":
-                    shift = int(request.form.get("shift", 3))
+                    # Handle empty string submissions gracefully
+                    shift_val = request.form.get("shift", "").strip()
+                    shift = int(shift_val) if shift_val else 3
                     cipher_instance = Shift(shift)
-                case "mixed_alphabet":
-                    # enforce user to provide a keyword, setting a default keyword is a bad idea.
-                    keyword: str = request.form.get("keyword", "")
-                    if not keyword:
-                        raise ValueError(
-                            "Keyword is required for Mixed Alphabet cipher."
-                        )
-                    cipher_instance = MixedAlphabet(keyword)
+
                 case "simple_substitution":
-                    # enforce user to provide one or generate one, use need to know the cipher_alphabet as it is work as a key
-                    cipher_alphabet : str = request.form.get("cipher_alphabet", "")
-                    
-                    # generate a random cipher_alphabet
+                    cipher_alphabet = request.form.get("cipher_alphabet", "")
+
                     if action == "generate":
-                        cipher_alphabet: str = SimpleSubstitution.generate_cipher_alphabet()
-                        
+                        cipher_alphabet = SimpleSubstitution.generate_cipher_alphabet()
+
                     if not cipher_alphabet:
-                        raise ValueError(
-                            "Alphabet is required for Simple Substitution cipher; generate one."
-                        )
+                        raise ValueError("Alphabet is required for Simple Substitution cipher; generate one.")
+
                     cipher_instance = SimpleSubstitution(cipher_alphabet)
+
+                case "mixed_alphabet" | "alberti" | "vigenere" | "beaufort" | "autokey":
+                    # Safely get keyword to avoid Flask BadRequestKeyError
+                    keyword = request.form.get("keyword", "").strip()
+                    if not keyword:
+                        raise ValueError("Keyword is required.")
+                    cipher_instance = cipher_class(keyword)
+
                 case _:
                     cipher_instance = cipher_class()
-                
+
             # Perform encryption or decryption
             if action == "encrypt":
-                result: str = cipher_instance.cipher(text)
+                result = cipher_instance.cipher(text)
             elif action == "decrypt":
-                result : str = cipher_instance.decipher(text)
+                result = cipher_instance.decipher(text)
 
         except (ValueError, KeyError) as e:
             error = str(e)
 
     return render_template(
         "cipher.html",
+        text=text,
+        algo=algo,
+        keyword=keyword,
+        shift=shift,
         result=result,
         cipher_alphabet=cipher_alphabet,
         error=error,

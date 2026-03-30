@@ -30,7 +30,7 @@
                     <div class="form-group">
                         <label class="label block mb-2" for="text-input">Plain Text</label>
                         <textarea class="textarea w-full" id="text-input" name="text" placeholder="Enter your text here"
-                            required></textarea>
+                            required>{{ text }}</textarea>
                     </div>
 
                     {# select #}
@@ -39,37 +39,36 @@
                         <label class="label block mb-2" for="algo-select">Cipher Algorithm</label>
                         <select class="select w-full" id="algo-select" name="algo">
                             <optgroup label="Monoalphabetic Substitution Ciphers">
-                                <option value="caesar">Caesar</option>
-                                <option value="shift">Shift Cipher</option>
-                                <option value="atbash">Atbash</option>
-                                <option value="simple_substitution">Simple Substitution</option>
-                                <option value="polybius_square">Polybius Square</option>
-                                <option value="baconian">Baconian</option>
-                                <option value="rot13">Rot13</option>
-                                <option value="mixed_alphabet">Mixed Alphabet</option>
+                                <option value="caesar" {% if algo == "caesar" %} selected {% endif %}>Caesar</option>
+                                <option value="shift" {% if algo == "shift" %} selected {% endif %}>Shift Cipher</option>
+                                <option value="atbash" {% if algo == "atbash" %} selected {% endif %}>Atbash</option>
+                                <option value="simple_substitution" {% if algo == "simple_substitution" %} selected {% endif %}>Simple Substitution</option>
+                                <option value="polybius_square" {% if algo == "polybius_square" %} selected {% endif %}>Polybius Square</option>
+                                <option value="baconian" {% if algo == "baconian" %} selected {% endif %}>Baconian</option>
+                                <option value="rot13" {% if algo == "rot13" %} selected {% endif %}>Rot13</option>
+                                <option value="mixed_alphabet" {% if algo == "mixed_alphabet" %} selected {% endif %}>Mixed Alphabet</option>
                             </optgroup>
-                            {#
                             <optgroup label="Polyalphabetic Substitution Ciphers">
-                                <option value="alberti">Alberti</option>
-                                <option value="vigenere">Vigenere</option>
-                                <option value="beaufort">Beaufort</option>
-                                <option value="autokey">Autokey</option>
+                                <option value="alberti" {% if algo == "alberti" %} selected {% endif %}>Alberti</option>
+                                <option value="trithemius" {% if algo == "trithemius" %} selected {% endif %}>Trithemius</option>
+                                <option value="vigenere" {% if algo == "vigenere" %} selected {% endif %}>Vigenere</option>
+                                <option value="beaufort" {% if algo == "beaufort" %} selected {% endif %}>Beaufort</option>
+                                <option value="autokey" {% if algo == "autokey" %} selected {% endif %}>Autokey</option>
                             </optgroup>
-                            #}
                         </select>
                     </div>
 
                     {# keyword #}
                     <div class="form-group" id="keyword-group" style="display: none;">
                         <label class="label block mb-2" for="keyword-input">Keyword</label>
-                        <input class="input w-full" id="keyword-input" name="keyword" placeholder="Enter keyword">
+                        <input class="input w-full" id="keyword-input" name="keyword" placeholder="Enter keyword" value="{{ keyword }}">
                     </div>
 
                     {# shift #}
                     <div class="form-group" id="shift-group" style="display: none;">
-                        <label class="label block mb-2" for="shift-input">Shift Amount: <output>3</output></label>
+                        <label class="label block mb-2" for="shift-input">Shift Amount: <output>{{ shift }}</output></label>
                         <input class="range shift w-full" type="range" id="shift-input" name="shift" min="1" max="100"
-                            value="3" oninput="this.previousElementSibling.querySelector('output').value = this.value">
+                            value="{{ shift }}" oninput="this.previousElementSibling.querySelector('output').value = this.value">
                     </div>
 
 
