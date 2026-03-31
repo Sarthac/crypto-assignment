@@ -64,6 +64,20 @@
                         <input class="input w-full" id="keyword-input" name="keyword" placeholder="Enter keyword" value="{{ keyword }}">
                     </div>
 
+                    {# input number (frequency) for alberti #}
+                    <div class="form-group" id="frequency" style="display: none;">
+                        <label class="label block mb-2" for="frequency">frequency</label>
+                        <input
+                          type="number"
+                          min="1"
+                          class="input w-full"
+                          placeholder="How often to rotate the disk"
+                          title="Rotate the disk"
+                          name="frequency"
+                          value="{{ frequency }}"
+                        />
+                    </div>
+
                     {# shift #}
                     <div class="form-group" id="shift-group" style="display: none;">
                         <label class="label block mb-2" for="shift-input">Shift Amount: <output>{{ shift }}</output></label>
@@ -83,6 +97,19 @@
                                 class="btn btn-primary btn-outline">Generate</button>
                         </div>
                     </div>
+
+                    {# toggle #}
+                     <label class="label" id="toggle">
+                        <input {% if toggle_value %} checked="checked" {% endif %} type="checkbox" name="toggle" class="checkbox checkbox-primary" />
+                        Omit non-alphabetic characters
+                     </label>
+
+                    {# toggle #}
+                     <label class="label" id="modern-implementation-toggle" style="display: none;">
+                        <input {% if modern_implementation %} checked="checked" {% endif %} type="checkbox" name="modern-implementation-toggle" class="checkbox checkbox-primary" />
+                        Modern Implementation
+                     </label>
+
 
 
                     {# action #}

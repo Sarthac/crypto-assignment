@@ -1,6 +1,6 @@
 [project]
 name = "crypto-assignment"
-version = "0.3.1"
+version = "0.3.2"
 description = "A web application for encrypting and decrypting text using various encryption algorithms."
 readme = "README.md"
 requires-python = ">=3.12"

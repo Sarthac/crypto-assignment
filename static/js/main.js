@@ -3,6 +3,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const algoSelect = document.getElementById('algo-select');
     const keywordGroup = document.getElementById('keyword-group');
     const keyword = document.getElementById('keyword-input');
+    const modernImplementationToggle = document.getElementById('modern-implementation-toggle');
+    const frequency = document.getElementById('frequency');
+
 
     const keyGroup = document.getElementById('key-group')
     const shiftGroup = document.getElementById('shift-group');
@@ -10,12 +13,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const textInput = document.getElementById('text-input');
 
     const keyword_base_algorithm = new Set(["mixed_alphabet", "alberti", "vigenere", "beaufort", "autokey"]);
+    const modernImplementationCiphers = new Set(["baconian", "alberti"]);
     // Function to toggle visibility of conditional form groups
     const toggleConditionalFields = () => {
         const selectedAlgo = algoSelect.value;
         keywordGroup.style.display = (keyword_base_algorithm.has(selectedAlgo)) ? 'block' : 'none';
         shiftGroup.style.display = selectedAlgo === 'shift' ? 'block' : 'none';
         cipherAlphabetsGroup.style.display = selectedAlgo === 'simple_substitution' ? 'block' : 'none';
+        modernImplementationToggle.style.display = (modernImplementationCiphers.has(selectedAlgo)) ? 'block' : 'none';
+        frequency.style.display = selectedAlgo === "alberti"  ? 'block' : 'none';
     };
 
     // Event listener for algorithm selection change

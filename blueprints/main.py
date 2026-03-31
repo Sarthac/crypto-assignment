@@ -23,14 +23,18 @@ def convertor():
     algo: str = "caesar"
     keyword: str = ""
     shift: int = 3
+    toggle_value : bool = False
+    modern_implementation: bool = True
+    frequency : int = 50
     result: str | None = None
     cipher_alphabet: str | None = None
     error = None
 
     if request.method == "POST":
-        text = request.form.get("text", "")
-        algo = request.form.get("algo", "caesar")
-        action = request.form.get("action", "encrypt")
+        text: str = request.form.get("text", "")
+        algo: str = request.form.get("algo", "caesar")
+        action: str = request.form.get("action", "encrypt")
+        toggle_value : bool = request.form.get("toggle", False)
 
         try:
             # Enforce text ONLY if they are actively trying to encrypt/decrypt
@@ -65,8 +69,25 @@ def convertor():
                     shift = int(shift_val) if shift_val else 3
                     cipher_instance = Shift(shift)
 
+                case "alberti" :
+                    modern_implementation = request.form.get("modern-implementation-toggle", False)
+                    # Safely get keyword to avoid Flask BadRequestKeyError
+                    keyword = request.form.get("keyword", "").strip()
+                    frequency = request.form.get("frequency", 50)
+                    try:
+                        frequency = int(frequency)
+                    except ValueError:
+                        raise ValueError("Frequency is required.")
+                    if not keyword:
+                        raise ValueError("Keyword is required.")
+                    cipher_instance = cipher_class(key= keyword,frequency=frequency, modern_implementation=modern_implementation)
+
+                case "baconian":
+                    modern_implementation = request.form.get("modern-implementation-toggle", False)
+                    cipher_instance = cipher_class(modern_implementation=modern_implementation)
+
                 case "simple_substitution":
-                    cipher_alphabet = request.form.get("cipher_alphabet", "")
+                    cipher_alphabet = request.form.get("cipher_alphabet", "").strip()
 
                     if action == "generate":
                         cipher_alphabet = SimpleSubstitution.generate_cipher_alphabet()
@@ -76,7 +97,7 @@ def convertor():
 
                     cipher_instance = SimpleSubstitution(cipher_alphabet)
 
-                case "mixed_alphabet" | "alberti" | "vigenere" | "beaufort" | "autokey":
+                case "mixed_alphabet" | "vigenere" | "beaufort" | "autokey":
                     # Safely get keyword to avoid Flask BadRequestKeyError
                     keyword = request.form.get("keyword", "").strip()
                     if not keyword:
@@ -88,7 +109,7 @@ def convertor():
 
             # Perform encryption or decryption
             if action == "encrypt":
-                result = cipher_instance.cipher(text)
+                result = cipher_instance.cipher(text, omit_non_alpha=toggle_value)
             elif action == "decrypt":
                 result = cipher_instance.decipher(text)
 
@@ -101,6 +122,9 @@ def convertor():
         algo=algo,
         keyword=keyword,
         shift=shift,
+        toggle_value=toggle_value,
+        modern_implementation=modern_implementation,
+        frequency=frequency,
         result=result,
         cipher_alphabet=cipher_alphabet,
         error=error,
